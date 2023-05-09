@@ -49,17 +49,17 @@ const (
 	MsgTypeReportSlashing = "msg_report_slashing"
 
 	// DepositModuleAccount DepositModuleAccountName
-	DepositModuleAccount = ModuleName + "_pstake_deposit_account"
+	DepositModuleAccount = ModuleName + "_estake_deposit_account"
 
 	// DelegationModuleAccount DelegationModuleAccountName
-	DelegationModuleAccount = ModuleName + "_pstake_delegation_account"
+	DelegationModuleAccount = ModuleName + "_estake_delegation_account"
 
 	// RewardModuleAccount RewardModuleAccountName
-	RewardModuleAccount = ModuleName + "_pstake_reward_account"
+	RewardModuleAccount = ModuleName + "_estake_reward_account"
 
 	// UndelegationModuleAccount UndelegationModuleAccountName,
 	// This account will not be a part of maccPerms - Deny list, since it receives undelegated tokens.
-	UndelegationModuleAccount = ModuleName + "_pstake_undelegation_account"
+	UndelegationModuleAccount = ModuleName + "_estake_undelegation_account"
 
 	// RewardBoosterModuleAccount RewardBoosterModuleAccountName //legacy, required to be blocklisted
 	RewardBoosterModuleAccount = ModuleName + "_reward_booster_account"
@@ -93,10 +93,10 @@ const (
 
 // fee limits
 var (
-	MaxPstakeDepositFee    = sdk.MustNewDecFromStr("0.5")
-	MaxPstakeRestakeFee    = sdk.MustNewDecFromStr("0.2")
-	MaxPstakeUnstakeFee    = sdk.MustNewDecFromStr("0.5")
-	MaxPstakeRedemptionFee = sdk.MustNewDecFromStr("0.2")
+	MaxEstakeDepositFee    = sdk.MustNewDecFromStr("0.5")
+	MaxEstakeRestakeFee    = sdk.MustNewDecFromStr("0.2")
+	MaxEstakeUnstakeFee    = sdk.MustNewDecFromStr("0.5")
+	MaxEstakeRedemptionFee = sdk.MustNewDecFromStr("0.2")
 	MaxCValue              = sdk.MustNewDecFromStr("1.1")
 	RestakeCapPerDay       = sdk.MustNewDecFromStr("0.00069") //0.25185 or ~25% APY
 )

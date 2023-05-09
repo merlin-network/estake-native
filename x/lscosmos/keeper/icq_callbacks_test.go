@@ -8,7 +8,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	icqtypes "github.com/persistenceOne/persistence-sdk/v2/x/interchainquery/types"
 
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 func (suite *IntegrationTestSuite) TestHandleRewardsAccountCallbacks() {

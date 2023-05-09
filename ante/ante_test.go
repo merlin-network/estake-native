@@ -16,14 +16,14 @@ import (
 	tmrand "github.com/tendermint/tendermint/libs/rand"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	pstakeapp "github.com/persistenceOne/pstake-native/v2/app"
-	pstakehelpers "github.com/persistenceOne/pstake-native/v2/app/helpers"
+	estakeapp "github.com/merlin-network/estake-native/v2/app"
+	estakehelpers "github.com/merlin-network/estake-native/v2/app/helpers"
 )
 
 type IntegrationTestSuite struct {
 	suite.Suite
 
-	app         *pstakeapp.PstakeApp
+	app         *estakeapp.EstakeApp
 	anteHandler sdk.AnteHandler
 	ctx         sdk.Context
 	clientCtx   client.Context
@@ -35,7 +35,7 @@ func TestIntegrationTestSuite(t *testing.T) {
 }
 
 func (s *IntegrationTestSuite) SetupTest() {
-	app := pstakehelpers.Setup(s.T(), false, 1)
+	app := estakehelpers.Setup(s.T(), false, 1)
 	ctx := app.BaseApp.NewContext(false, tmproto.Header{
 		ChainID: fmt.Sprintf("test-chain-%s", tmrand.Str(4)),
 		Height:  1,

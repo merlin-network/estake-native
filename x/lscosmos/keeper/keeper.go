@@ -15,7 +15,7 @@ import (
 	host "github.com/cosmos/ibc-go/v6/modules/core/24-host"
 	"github.com/tendermint/tendermint/libs/log"
 
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 // Keeper of this module maintains the state of whole module
@@ -172,8 +172,8 @@ func (k Keeper) SendTokensToDepositModule(ctx sdk.Context, depositCoin sdk.Coins
 }
 
 // SendProtocolFee to the community pool
-func (k Keeper) SendProtocolFee(ctx sdk.Context, protocolFee sdk.Coins, moduleAccount, pstakeFeeAddressString string) error {
-	addr, err := sdk.AccAddressFromBech32(pstakeFeeAddressString)
+func (k Keeper) SendProtocolFee(ctx sdk.Context, protocolFee sdk.Coins, moduleAccount, estakeFeeAddressString string) error {
+	addr, err := sdk.AccAddressFromBech32(estakeFeeAddressString)
 	if err != nil {
 		return err
 	}

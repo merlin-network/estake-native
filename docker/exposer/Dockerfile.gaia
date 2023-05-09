@@ -1,4 +1,4 @@
-ARG BASE_DOCKER_IMAGE=persistenceone/gaia:latest
+ARG BASE_DOCKER_IMAGE=elysiumone/gaia:latest
 FROM golang:1.19-alpine AS build-env
 
 # Set up dependencies

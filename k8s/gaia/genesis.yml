@@ -60,7 +60,7 @@ spec:
         - name: test-docker-creds
       initContainers:
         - name: init-genesis
-          image: persistenceone/gaia
+          image: elysiumone/gaia
           imagePullPolicy: Always
           env:
             - name: COINS
@@ -110,7 +110,7 @@ spec:
               sed -i 's/index_all_keys = false/index_all_keys = true/g' $GAIA_DIR/config/config.toml
               sed -i 's/unsafe = false/unsafe = true/g' $GAIA_DIR/config/config.toml
               sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.00uatom"/g' $GAIA_DIR/config/config.toml
-              sed -i 's/cors_allowed_origins = []/cors_allowed_origins = ["*"]/g' $PSTAKE_DIR/config/config.toml
+              sed -i 's/cors_allowed_origins = []/cors_allowed_origins = ["*"]/g' $ESTAKE_DIR/config/config.toml
               
               sed -i 's/enable = false/enable = true/g' $GAIA_DIR/config/app.toml
               sed -i 's/swagger = false/swagger = true/g' $GAIA_DIR/config/app.toml
@@ -155,7 +155,7 @@ spec:
               name: addresses
       containers:
         - name: validator
-          image: persistenceone/gaia
+          image: elysiumone/gaia
           imagePullPolicy: Always
           env:
             - name: CHAIN_ID
@@ -183,7 +183,7 @@ spec:
             - mountPath: /configs
               name: addresses
         - name: exposer-app
-          image: persistenceone/exposer:gaia
+          image: elysiumone/exposer:gaia
           imagePullPolicy: Always
           env:
             - name: HOME_DIR

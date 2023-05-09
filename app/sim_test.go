@@ -6,9 +6,9 @@ import (
 	"os"
 	"testing"
 
-	pstake "github.com/persistenceOne/pstake-native/v2/app"
+	estake "github.com/merlin-network/estake-native/v2/app"
 
-	"github.com/persistenceOne/pstake-native/v2/app/helpers"
+	"github.com/merlin-network/estake-native/v2/app/helpers"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/libs/rand"
@@ -26,7 +26,7 @@ func init() {
 }
 
 // Profile with:
-// /usr/local/go/bin/go test -benchmem -run=^$ github.com/cosmos/cosmos-sdk/PstakeApp -bench ^BenchmarkFullAppSimulation$ -Commit=true -cpuprofile cpu.out
+// /usr/local/go/bin/go test -benchmem -run=^$ github.com/cosmos/cosmos-sdk/EstakeApp -bench ^BenchmarkFullAppSimulation$ -Commit=true -cpuprofile cpu.out
 func BenchmarkFullAppSimulation(b *testing.B) {
 	config, db, dir, logger, _, err := simapp.SetupSimulation("goleveldb-app-sim", "Simulation")
 	if err != nil {
@@ -41,7 +41,7 @@ func BenchmarkFullAppSimulation(b *testing.B) {
 		}
 	}()
 
-	app := pstake.NewpStakeApp(logger, db, nil, true, map[int64]bool{}, pstake.DefaultNodeHome, simapp.FlagPeriodValue, pstake.MakeEncodingConfig(), simapp.EmptyAppOptions{}, interBlockCacheOpt())
+	app := estake.NeweStakeApp(logger, db, nil, true, map[int64]bool{}, estake.DefaultNodeHome, simapp.FlagPeriodValue, estake.MakeEncodingConfig(), simapp.EmptyAppOptions{}, interBlockCacheOpt())
 
 	// Run randomized simulation:w
 	_, simParams, simErr := simulation.SimulateFromSeed(
@@ -106,7 +106,7 @@ func TestAppStateDeterminism(t *testing.T) {
 			}
 
 			db := dbm.NewMemDB()
-			app := pstake.NewpStakeApp(logger, db, nil, true, map[int64]bool{}, pstake.DefaultNodeHome, simapp.FlagPeriodValue, pstake.MakeEncodingConfig(), simapp.EmptyAppOptions{}, interBlockCacheOpt())
+			app := estake.NeweStakeApp(logger, db, nil, true, map[int64]bool{}, estake.DefaultNodeHome, simapp.FlagPeriodValue, estake.MakeEncodingConfig(), simapp.EmptyAppOptions{}, interBlockCacheOpt())
 
 			fmt.Printf(
 				"running non-determinism simulation; seed %d: %d/%d, attempt: %d/%d\n",

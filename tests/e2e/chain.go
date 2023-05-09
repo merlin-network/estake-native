@@ -12,8 +12,8 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	tmrand "github.com/tendermint/tendermint/libs/rand"
 
-	pstakeApp "github.com/persistenceOne/pstake-native/v2/app"
-	"github.com/persistenceOne/pstake-native/v2/app/params"
+	estakeApp "github.com/merlin-network/estake-native/v2/app"
+	"github.com/merlin-network/estake-native/v2/app/params"
 )
 
 const (
@@ -27,7 +27,7 @@ var (
 )
 
 func init() {
-	encodingConfig = pstakeApp.MakeEncodingConfig()
+	encodingConfig = estakeApp.MakeEncodingConfig()
 
 	encodingConfig.InterfaceRegistry.RegisterImplementations(
 		(*sdk.Msg)(nil),
@@ -49,7 +49,7 @@ type chain struct {
 }
 
 func newChain() (*chain, error) {
-	tmpDir, err := ioutil.TempDir("", "pstake-e2e-testnet-")
+	tmpDir, err := ioutil.TempDir("", "estake-e2e-testnet-")
 	if err != nil {
 		return nil, err
 	}

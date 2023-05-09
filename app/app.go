@@ -118,18 +118,18 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	pstakeante "github.com/persistenceOne/pstake-native/v2/ante"
-	pstakeappparams "github.com/persistenceOne/pstake-native/v2/app/params"
-	"github.com/persistenceOne/pstake-native/v2/x/liquidstakeibc"
-	liquidstakeibckeeper "github.com/persistenceOne/pstake-native/v2/x/liquidstakeibc/keeper"
-	liquidstakeibctypes "github.com/persistenceOne/pstake-native/v2/x/liquidstakeibc/types"
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos"
-	lscosmosclient "github.com/persistenceOne/pstake-native/v2/x/lscosmos/client"
-	lscosmoskeeper "github.com/persistenceOne/pstake-native/v2/x/lscosmos/keeper"
-	lscosmostypes "github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
-	"github.com/persistenceOne/pstake-native/v2/x/lspersistence"
-	lspersistencekeeper "github.com/persistenceOne/pstake-native/v2/x/lspersistence/keeper"
-	lspersistencetypes "github.com/persistenceOne/pstake-native/v2/x/lspersistence/types"
+	estakeante "github.com/merlin-network/estake-native/v2/ante"
+	estakeappparams "github.com/merlin-network/estake-native/v2/app/params"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc"
+	liquidstakeibckeeper "github.com/merlin-network/estake-native/v2/x/liquidstakeibc/keeper"
+	liquidstakeibctypes "github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos"
+	lscosmosclient "github.com/merlin-network/estake-native/v2/x/lscosmos/client"
+	lscosmoskeeper "github.com/merlin-network/estake-native/v2/x/lscosmos/keeper"
+	lscosmostypes "github.com/merlin-network/estake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lselysium"
+	lselysiumkeeper "github.com/merlin-network/estake-native/v2/x/lselysium/keeper"
+	lselysiumtypes "github.com/merlin-network/estake-native/v2/x/lselysium/types"
 )
 
 var (
@@ -154,7 +154,7 @@ var (
 			ibcclientclient.UpdateClientProposalHandler,
 			ibcclientclient.UpgradeProposalHandler,
 			lscosmosclient.MinDepositAndFeeChangeProposalHandler,
-			lscosmosclient.PstakeFeeAddressChangeProposalHandler,
+			lscosmosclient.EstakeFeeAddressChangeProposalHandler,
 			lscosmosclient.AllowListValidatorSetChangeProposalHandler},
 		),
 		params.AppModuleBasic{},
@@ -174,7 +174,7 @@ var (
 		lscosmos.AppModuleBasic{},
 		interchainquery.AppModuleBasic{},
 		liquidstakeibc.AppModuleBasic{},
-		lspersistence.AppModuleBasic{},
+		lselysium.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -195,7 +195,7 @@ var (
 		lscosmostypes.UndelegationModuleAccount:  nil,
 		lscosmostypes.RewardBoosterModuleAccount: nil, //legacy, blocklist, no permissions
 		liquidstakeibctypes.ModuleName:           nil,
-		lspersistencetypes.ModuleName:            {authtypes.Minter, authtypes.Burner},
+		lselysiumtypes.ModuleName:                {authtypes.Minter, authtypes.Burner},
 	}
 
 	receiveAllowedMAcc = map[string]bool{
@@ -205,16 +205,16 @@ var (
 )
 
 var (
-	_ simapp.App                          = (*PstakeApp)(nil)
-	_ servertypes.Application             = (*PstakeApp)(nil)
-	_ ibctesting.TestingApp               = (*PstakeApp)(nil)
-	_ servertypes.ApplicationQueryService = (*PstakeApp)(nil)
+	_ simapp.App                          = (*EstakeApp)(nil)
+	_ servertypes.Application             = (*EstakeApp)(nil)
+	_ ibctesting.TestingApp               = (*EstakeApp)(nil)
+	_ servertypes.ApplicationQueryService = (*EstakeApp)(nil)
 )
 
-// PstakeApp extends an ABCI application, but with most of its parameters exported.
+// EstakeApp extends an ABCI application, but with most of its parameters exported.
 // They are exported for convenience in creating helper functions, as object
 // capabilities aren't needed for testing.
-type PstakeApp struct {
+type EstakeApp struct {
 	*baseapp.BaseApp
 	legacyAmino       *codec.LegacyAmino
 	appCodec          codec.Codec
@@ -253,7 +253,7 @@ type PstakeApp struct {
 	LSCosmosKeeper        lscosmoskeeper.Keeper
 	InterchainQueryKeeper interchainquerykeeper.Keeper
 	LiquidStakeIBCKeeper  liquidstakeibckeeper.Keeper
-	LSPersistenceKeeper   lspersistencekeeper.Keeper
+	LSElysiumKeeper       lselysiumkeeper.Keeper
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper           capabilitykeeper.ScopedKeeper
@@ -276,21 +276,21 @@ func init() {
 		stdlog.Println("Failed to get home dir %2", err)
 	}
 
-	DefaultNodeHome = filepath.Join(userHomeDir, ".pstaked")
+	DefaultNodeHome = filepath.Join(userHomeDir, ".estaked")
 }
 
-// NewpStakeApp returns a reference to an initialized pStake.
-func NewpStakeApp(
+// NeweStakeApp returns a reference to an initialized eStake.
+func NeweStakeApp(
 	logger log.Logger,
 	db dbm.DB, traceStore io.Writer,
 	loadLatest bool,
 	skipUpgradeHeights map[int64]bool,
 	homePath string,
 	invCheckPeriod uint,
-	encodingConfig pstakeappparams.EncodingConfig,
+	encodingConfig estakeappparams.EncodingConfig,
 	appOpts servertypes.AppOptions,
 	baseAppOptions ...func(*baseapp.BaseApp),
-) *PstakeApp {
+) *EstakeApp {
 	appCodec := encodingConfig.Marshaler
 	legacyAmino := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
@@ -307,12 +307,12 @@ func NewpStakeApp(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey,
 		capabilitytypes.StoreKey, feegrant.StoreKey, authzkeeper.StoreKey, icahosttypes.StoreKey,
 		icacontrollertypes.StoreKey, epochstypes.StoreKey, lscosmostypes.StoreKey, interchainquerytypes.StoreKey,
-		ibcfeetypes.StoreKey, liquidstakeibctypes.StoreKey, lspersistencetypes.StoreKey,
+		ibcfeetypes.StoreKey, liquidstakeibctypes.StoreKey, lselysiumtypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey, lscosmostypes.MemStoreKey)
 
-	app := &PstakeApp{
+	app := &EstakeApp{
 		BaseApp:           bApp,
 		legacyAmino:       legacyAmino,
 		appCodec:          appCodec,
@@ -421,8 +421,8 @@ func NewpStakeApp(
 		stakingtypes.NewMultiStakingHooks(app.DistrKeeper.Hooks(), app.SlashingKeeper.Hooks()),
 	)
 
-	app.LSPersistenceKeeper = lspersistencekeeper.NewKeeper(appCodec, keys[lspersistencetypes.StoreKey],
-		app.GetSubspace(lspersistencetypes.ModuleName), app.AccountKeeper, app.BankKeeper,
+	app.LSElysiumKeeper = lselysiumkeeper.NewKeeper(appCodec, keys[lselysiumtypes.StoreKey],
+		app.GetSubspace(lselysiumtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
 		app.StakingKeeper, app.DistrKeeper, app.SlashingKeeper)
 
 	app.IBCKeeper = ibckeeper.NewKeeper(
@@ -615,7 +615,7 @@ func NewpStakeApp(
 		lscosmos.NewAppModule(appCodec, liquidStakeIBCModule, app.LSCosmosKeeper, app.AccountKeeper, app.BankKeeper),
 		interchainQueryModule,
 		liquidstakeibc.NewAppModule(app.LiquidStakeIBCKeeper),
-		lspersistence.NewAppModule(appCodec, app.LSPersistenceKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
+		lselysium.NewAppModule(appCodec, app.LSElysiumKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -650,7 +650,7 @@ func NewpStakeApp(
 		ibchookertypes.ModuleName, //Noop
 		interchainquerytypes.ModuleName,
 		liquidstakeibctypes.ModuleName,
-		lspersistencetypes.ModuleName,
+		lselysiumtypes.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
 		crisistypes.ModuleName,
@@ -678,7 +678,7 @@ func NewpStakeApp(
 		ibchookertypes.ModuleName, //Noop
 		interchainquerytypes.ModuleName,
 		liquidstakeibctypes.ModuleName,
-		lspersistencetypes.ModuleName,
+		lselysiumtypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -713,7 +713,7 @@ func NewpStakeApp(
 		ibchookertypes.ModuleName, //Noop
 		interchainquerytypes.ModuleName,
 		liquidstakeibctypes.ModuleName,
-		lspersistencetypes.ModuleName,
+		lselysiumtypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -744,7 +744,7 @@ func NewpStakeApp(
 		// ibcTransferHooksMiddleware, TODO implement simulationModule interface
 		//icaModule,
 		lscosmos.NewAppModule(appCodec, liquidStakeIBCModule, app.LSCosmosKeeper, app.AccountKeeper, app.BankKeeper),
-		lspersistence.NewAppModule(appCodec, app.LSPersistenceKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
+		lselysium.NewAppModule(appCodec, app.LSElysiumKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
 	)
 
 	app.sm.RegisterStoreDecoders()
@@ -754,8 +754,8 @@ func NewpStakeApp(
 	app.MountTransientStores(tkeys)
 	app.MountMemoryStores(memKeys)
 
-	anteHandler, err := pstakeante.NewAnteHandler(
-		pstakeante.HandlerOptions{
+	anteHandler, err := estakeante.NewAnteHandler(
+		estakeante.HandlerOptions{
 			HandlerOptions: ante.HandlerOptions{
 				AccountKeeper:   app.AccountKeeper,
 				BankKeeper:      app.BankKeeper,
@@ -764,7 +764,7 @@ func NewpStakeApp(
 				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
 			},
 			IBCkeeper:            app.IBCKeeper,
-			BypassMinFeeMsgTypes: cast.ToStringSlice(appOpts.Get(pstakeappparams.BypassMinFeeMsgTypesKey)),
+			BypassMinFeeMsgTypes: cast.ToStringSlice(appOpts.Get(estakeappparams.BypassMinFeeMsgTypesKey)),
 		},
 	)
 	if err != nil {
@@ -806,20 +806,20 @@ func NewpStakeApp(
 }
 
 // Name returns the name of the App
-func (app *PstakeApp) Name() string { return app.BaseApp.Name() }
+func (app *EstakeApp) Name() string { return app.BaseApp.Name() }
 
 // BeginBlocker application updates every begin block
-func (app *PstakeApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *EstakeApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 
 // EndBlocker application updates every end block
-func (app *PstakeApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *EstakeApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 
 // InitChainer application update at chain initialization
-func (app *PstakeApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *EstakeApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState GenesisState
 	if err := tmjson.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
@@ -831,12 +831,12 @@ func (app *PstakeApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) ab
 }
 
 // LoadHeight loads a particular height
-func (app *PstakeApp) LoadHeight(height int64) error {
+func (app *EstakeApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height)
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (app *PstakeApp) ModuleAccountAddrs() map[string]bool {
+func (app *EstakeApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		modAccAddrs[authtypes.NewModuleAddress(acc).String()] = true
@@ -844,7 +844,7 @@ func (app *PstakeApp) ModuleAccountAddrs() map[string]bool {
 
 	return modAccAddrs
 }
-func (app *PstakeApp) SendCoinBlockedAddrs() map[string]bool {
+func (app *EstakeApp) SendCoinBlockedAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		modAccAddrs[authtypes.NewModuleAddress(acc).String()] = !receiveAllowedMAcc[acc]
@@ -852,64 +852,64 @@ func (app *PstakeApp) SendCoinBlockedAddrs() map[string]bool {
 	return modAccAddrs
 }
 
-// LegacyAmino returns PstakeApp's amino codec.
+// LegacyAmino returns EstakeApp's amino codec.
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *PstakeApp) LegacyAmino() *codec.LegacyAmino {
+func (app *EstakeApp) LegacyAmino() *codec.LegacyAmino {
 	return app.legacyAmino
 }
 
-// AppCodec returns pStake's app codec.
+// AppCodec returns eStake's app codec.
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *PstakeApp) AppCodec() codec.Codec {
+func (app *EstakeApp) AppCodec() codec.Codec {
 	return app.appCodec
 }
 
-// InterfaceRegistry returns pStake's InterfaceRegistry
-func (app *PstakeApp) InterfaceRegistry() types.InterfaceRegistry {
+// InterfaceRegistry returns eStake's InterfaceRegistry
+func (app *EstakeApp) InterfaceRegistry() types.InterfaceRegistry {
 	return app.interfaceRegistry
 }
 
 // GetKey returns the KVStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *PstakeApp) GetKey(storeKey string) *store.KVStoreKey {
+func (app *EstakeApp) GetKey(storeKey string) *store.KVStoreKey {
 	return app.keys[storeKey]
 }
 
 // GetTKey returns the TransientStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *PstakeApp) GetTKey(storeKey string) *store.TransientStoreKey {
+func (app *EstakeApp) GetTKey(storeKey string) *store.TransientStoreKey {
 	return app.tkeys[storeKey]
 }
 
 // GetMemKey returns the MemStoreKey for the provided mem key.
 //
 // NOTE: This is solely used for testing purposes.
-func (app *PstakeApp) GetMemKey(storeKey string) *store.MemoryStoreKey {
+func (app *EstakeApp) GetMemKey(storeKey string) *store.MemoryStoreKey {
 	return app.memKeys[storeKey]
 }
 
 // GetSubspace returns a param subspace for a given module name.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *PstakeApp) GetSubspace(moduleName string) paramstypes.Subspace {
+func (app *EstakeApp) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, _ := app.ParamsKeeper.GetSubspace(moduleName)
 	return subspace
 }
 
 // SimulationManager implements the SimulationApp interface
-func (app *PstakeApp) SimulationManager() *module.SimulationManager {
+func (app *EstakeApp) SimulationManager() *module.SimulationManager {
 	return app.sm
 }
 
 // RegisterAPIRoutes registers all application module routes with the provided
 // API server.
-func (app *PstakeApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
+func (app *EstakeApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
 	clientCtx := apiSvr.ClientCtx
 	// Register new tx routes from grpc-gateway.
 	authtx.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
@@ -930,12 +930,12 @@ func (app *PstakeApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.API
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
-func (app *PstakeApp) RegisterTxService(clientCtx client.Context) {
+func (app *EstakeApp) RegisterTxService(clientCtx client.Context) {
 	authtx.RegisterTxService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.BaseApp.Simulate, app.interfaceRegistry)
 }
 
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
-func (app *PstakeApp) RegisterTendermintService(clientCtx client.Context) {
+func (app *EstakeApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(
 		clientCtx,
 		app.BaseApp.GRPCQueryRouter(),
@@ -944,7 +944,7 @@ func (app *PstakeApp) RegisterTendermintService(clientCtx client.Context) {
 	)
 }
 
-func (app *PstakeApp) RegisterNodeService(clientCtx client.Context) {
+func (app *EstakeApp) RegisterNodeService(clientCtx client.Context) {
 	nodeservice.RegisterNodeService(clientCtx, app.GRPCQueryRouter())
 }
 
@@ -978,7 +978,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(lscosmostypes.ModuleName)
 	paramsKeeper.Subspace(interchainquerytypes.ModuleName)
 	paramsKeeper.Subspace(liquidstakeibctypes.ModuleName)
-	paramsKeeper.Subspace(lspersistencetypes.ModuleName)
+	paramsKeeper.Subspace(lselysiumtypes.ModuleName)
 
 	return paramsKeeper
 }
@@ -986,27 +986,27 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 // IBC Go TestingApp functions
 
 // GetBaseApp implements the TestingApp interface.
-func (app *PstakeApp) GetBaseApp() *baseapp.BaseApp {
+func (app *EstakeApp) GetBaseApp() *baseapp.BaseApp {
 	return app.BaseApp
 }
 
 // GetStakingKeeper implements the TestingApp interface.
-func (app *PstakeApp) GetStakingKeeper() ibctestingtypes.StakingKeeper {
+func (app *EstakeApp) GetStakingKeeper() ibctestingtypes.StakingKeeper {
 	return app.StakingKeeper
 }
 
 // GetIBCKeeper implements the TestingApp interface.
-func (app *PstakeApp) GetIBCKeeper() *ibckeeper.Keeper {
+func (app *EstakeApp) GetIBCKeeper() *ibckeeper.Keeper {
 	return app.IBCKeeper
 }
 
 // GetScopedIBCKeeper implements the TestingApp interface.
-func (app *PstakeApp) GetScopedIBCKeeper() capabilitykeeper.ScopedKeeper {
+func (app *EstakeApp) GetScopedIBCKeeper() capabilitykeeper.ScopedKeeper {
 	return app.ScopedIBCKeeper
 }
 
 // GetTxConfig implements the TestingApp interface.
-func (app *PstakeApp) GetTxConfig() client.TxConfig {
+func (app *EstakeApp) GetTxConfig() client.TxConfig {
 	cfg := MakeEncodingConfig()
 	return cfg.TxConfig
 }

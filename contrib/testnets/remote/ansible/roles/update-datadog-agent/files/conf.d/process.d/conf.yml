@@ -5,8 +5,8 @@ instances:
   search_string: ['ssh', 'sshd']
   thresholds:
     critical: [1, 5]
-- name: pstaked
-  search_string: ['pstaked']
+- name: estaked
+  search_string: ['estaked']
   thresholds:
     critical: [1, 1]
 - name: gaiacli

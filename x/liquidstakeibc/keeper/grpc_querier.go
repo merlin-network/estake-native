@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/persistenceOne/pstake-native/v2/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
 )
 
 var _ types.QueryServer = Keeper{}

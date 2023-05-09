@@ -12,7 +12,7 @@ import (
 // RegisterLegacyAminoCodec registers the necessary x/liquidstakeibc interfaces and concrete types
 // on the provided LegacyAmino codec. These types are used for Amino JSON serialization.
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
-	legacy.RegisterAminoMsg(cdc, &MsgDummy{}, "pstake/MsgDummy")
+	legacy.RegisterAminoMsg(cdc, &MsgDummy{}, "estake/MsgDummy")
 }
 
 func RegisterInterfaces(registry types.InterfaceRegistry) {

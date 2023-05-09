@@ -54,7 +54,7 @@ Last event
 | liquid-stake | address            | {recipientAddress}                  |
 | liquid-stake | amount             | {mintSTKAmount}                     |
 | liquid-stake | received           | {mintSTKAmount - protocolFeeAmount} |
-| liquid-stake | pstake-deposit-fee | {protocolFeeAmount}                 |
+| liquid-stake | estake-deposit-fee | {protocolFeeAmount}                 |
 | message      | module             | lscosmos                            |
 | message      | sender             | {address}                           |
 
@@ -88,7 +88,7 @@ Last event
 | liquid-unstake | address             | {delegatiorAddress}  |
 | liquid-unstake | received            | {amount}             |
 | liquid-unstake | undelegation-amount | {undelegationAmount} |
-| liquid-unstake | pstake-unstake-fee  | {protocolFeeAmount}  |
+| liquid-unstake | estake-unstake-fee  | {protocolFeeAmount}  |
 | message        | module              | lscosmos             |
 | message        | sender              | {address}            |
 
@@ -138,7 +138,7 @@ Last event
 | redeem  | address          | {delegatiorAddress} |
 | redeem  | amount           | {amount}            |
 | redeem  | received         | {redeemAmount}      |
-| redeem  | pstake-redem-fee | {protocolFeeAmount} |
+| redeem  | estake-redem-fee | {protocolFeeAmount} |
 | message | module           | lscosmos            |
 | message | sender           | {address}           |
 
@@ -188,7 +188,7 @@ Last event
 | redeem  | address          | {delegatiorAddress} |
 | redeem  | amount           | {amount}            |
 | redeem  | received         | {redeemAmount}      |
-| redeem  | pstake-redem-fee | {protocolFeeAmount} |
+| redeem  | estake-redem-fee | {protocolFeeAmount} |
 | message | module           | lscosmos            |
 | message | sender           | {address}           |
 
@@ -234,7 +234,7 @@ Last event
 
 | Type       | Attribute Key    | Attribute Value     |
 |------------|------------------|---------------------|
-| jump-start | pstake-address   | {address}           |
+| jump-start | estake-address   | {address}           |
 | message    | module           | lscosmos            |
 | message    | sender           | {address}           |
 
@@ -242,7 +242,7 @@ Last event
 
 | Type        | Attribute Key           | Attribute Value          |
 |-------------|-------------------------|--------------------------|
-| recreat-ica | pstake-address          | {address}                |
+| recreat-ica | estake-address          | {address}                |
 | recreat-ica | recreate-delegation-ica | {delegatorAccountPortID} |
 | recreat-ica | recreate-rewards-ica    | {rewardsAccountPortID}   |
 | message     | module                  | lscosmos                 |

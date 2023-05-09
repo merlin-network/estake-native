@@ -100,7 +100,7 @@ Once all the steps mentioned is complete then setup of gaia chain can be done by
 make apply PROCESS=gaia
 ```
 
-### Ex. : Setting up pstake chain
+### Ex. : Setting up estake chain
 Once all the steps mentioned is complete then setup of gaia chain can be done by running inside the k8s directory.
 ```commandline
 make apply PROCESS=pstae

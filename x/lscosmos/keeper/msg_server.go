@@ -15,7 +15,7 @@ import (
 	ibcporttypes "github.com/cosmos/ibc-go/v6/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v6/modules/core/24-host"
 
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 type msgServer struct {
@@ -99,7 +99,7 @@ func (m msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake)
 	}
 
 	//Calculate protocol fee
-	protocolFee := hostChainParams.PstakeParams.PstakeDepositFee
+	protocolFee := hostChainParams.EstakeParams.EstakeDepositFee
 	protocolFeeAmount := protocolFee.MulInt(mintToken.Amount)
 	// We do not care about residue, as to not break Total calculation invariant.
 	protocolCoin, _ := sdktypes.NewDecCoinFromDec(hostChainParams.MintDenom, protocolFeeAmount).TruncateDecimal()
@@ -116,11 +116,11 @@ func (m msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake)
 
 	//Send protocol fee to protocol pool
 	if protocolCoin.IsPositive() {
-		err = m.SendProtocolFee(ctx, sdktypes.NewCoins(protocolCoin), types.ModuleName, hostChainParams.PstakeParams.PstakeFeeAddress)
+		err = m.SendProtocolFee(ctx, sdktypes.NewCoins(protocolCoin), types.ModuleName, hostChainParams.EstakeParams.EstakeFeeAddress)
 		if err != nil {
 			return nil, errorsmod.Wrapf(
-				types.ErrFailedDeposit, "failed to send protocol fee to pstake fee address %s, got error : %s",
-				hostChainParams.PstakeParams.PstakeFeeAddress, err,
+				types.ErrFailedDeposit, "failed to send protocol fee to estake fee address %s, got error : %s",
+				hostChainParams.EstakeParams.EstakeFeeAddress, err,
 			)
 		}
 	}
@@ -130,7 +130,7 @@ func (m msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake)
 			sdktypes.NewAttribute(types.AttributeDelegatorAddress, delegatorAddress.String()),
 			sdktypes.NewAttribute(types.AttributeAmount, mintToken.String()),
 			sdktypes.NewAttribute(types.AttributeAmountReceived, mintToken.Sub(protocolCoin).String()),
-			sdktypes.NewAttribute(types.AttributePstakeDepositFee, protocolCoin.String()),
+			sdktypes.NewAttribute(types.AttributeEstakeDepositFee, protocolCoin.String()),
 		),
 		sdktypes.NewEvent(
 			sdktypes.EventTypeMessage,
@@ -165,16 +165,16 @@ func (m msgServer) LiquidUnstake(goCtx context.Context, msg *types.MsgLiquidUnst
 	if err != nil {
 		return nil, err
 	}
-	// take pstake fees
+	// take estake fees
 	unstakeCoin := msg.Amount
-	pstakeFeeAmt := hostChainParams.PstakeParams.PstakeUnstakeFee.MulInt(msg.Amount.Amount).TruncateInt()
-	pstakeFee := sdktypes.NewCoin(msg.Amount.Denom, pstakeFeeAmt)
-	if pstakeFeeAmt.IsPositive() {
-		err = m.SendProtocolFee(ctx, sdktypes.NewCoins(pstakeFee), types.UndelegationModuleAccount, hostChainParams.PstakeParams.PstakeFeeAddress)
+	estakeFeeAmt := hostChainParams.EstakeParams.EstakeUnstakeFee.MulInt(msg.Amount.Amount).TruncateInt()
+	estakeFee := sdktypes.NewCoin(msg.Amount.Denom, estakeFeeAmt)
+	if estakeFeeAmt.IsPositive() {
+		err = m.SendProtocolFee(ctx, sdktypes.NewCoins(estakeFee), types.UndelegationModuleAccount, hostChainParams.EstakeParams.EstakeFeeAddress)
 		if err != nil {
 			return nil, err
 		}
-		unstakeCoin = msg.Amount.Sub(pstakeFee)
+		unstakeCoin = msg.Amount.Sub(estakeFee)
 	}
 
 	// Add entry to unbonding db
@@ -202,7 +202,7 @@ func (m msgServer) LiquidUnstake(goCtx context.Context, msg *types.MsgLiquidUnst
 			types.EventTypeLiquidUnstake,
 			sdktypes.NewAttribute(types.AttributeDelegatorAddress, msg.GetDelegatorAddress()),
 			sdktypes.NewAttribute(types.AttributeAmountReceived, msg.Amount.String()),
-			sdktypes.NewAttribute(types.AttributePstakeUnstakeFee, pstakeFee.String()),
+			sdktypes.NewAttribute(types.AttributeEstakeUnstakeFee, estakeFee.String()),
 			sdktypes.NewAttribute(types.AttributeUnstakeAmount, unstakeCoin.String()),
 		),
 		sdktypes.NewEvent(
@@ -242,7 +242,7 @@ func (m msgServer) Redeem(goCtx context.Context, msg *types.MsgRedeem) (*types.M
 	// protocolCoin is the redemption fee
 	protocolCoin, _ := sdktypes.NewDecCoinFromDec(
 		hostChainParams.MintDenom,
-		hostChainParams.PstakeParams.PstakeRedemptionFee.MulInt(msg.Amount.Amount),
+		hostChainParams.EstakeParams.EstakeRedemptionFee.MulInt(msg.Amount.Amount),
 	).TruncateDecimal()
 
 	// send redeem tokens to module account from redeem account
@@ -256,11 +256,11 @@ func (m msgServer) Redeem(goCtx context.Context, msg *types.MsgRedeem) (*types.M
 
 	// send protocol fee to protocol pool
 	if protocolCoin.IsPositive() {
-		err = m.SendProtocolFee(ctx, sdktypes.NewCoins(protocolCoin), types.ModuleName, hostChainParams.PstakeParams.PstakeFeeAddress)
+		err = m.SendProtocolFee(ctx, sdktypes.NewCoins(protocolCoin), types.ModuleName, hostChainParams.EstakeParams.EstakeFeeAddress)
 		if err != nil {
 			return nil, errorsmod.Wrapf(
-				types.ErrFailedDeposit, "failed to send protocol fee to pstake fee address %s, got error : %s",
-				hostChainParams.PstakeParams.PstakeFeeAddress, err,
+				types.ErrFailedDeposit, "failed to send protocol fee to estake fee address %s, got error : %s",
+				hostChainParams.EstakeParams.EstakeFeeAddress, err,
 			)
 		}
 	}
@@ -300,7 +300,7 @@ func (m msgServer) Redeem(goCtx context.Context, msg *types.MsgRedeem) (*types.M
 			sdktypes.NewAttribute(types.AttributeDelegatorAddress, redeemAddress.String()),
 			sdktypes.NewAttribute(types.AttributeAmount, msg.Amount.String()),
 			sdktypes.NewAttribute(types.AttributeAmountReceived, redeemToken.String()),
-			sdktypes.NewAttribute(types.AttributePstakeRedeemFee, protocolCoin.String()),
+			sdktypes.NewAttribute(types.AttributeEstakeRedeemFee, protocolCoin.String()),
 		),
 		sdktypes.NewEvent(
 			sdktypes.EventTypeMessage,
@@ -385,10 +385,10 @@ func (m msgServer) Claim(goCtx context.Context, msg *types.MsgClaim) (*types.Msg
 func (m msgServer) JumpStart(goCtx context.Context, msg *types.MsgJumpStart) (*types.MsgJumpStartResponse, error) {
 	ctx := sdktypes.UnwrapSDKContext(goCtx)
 
-	// check pstake fee address == from addr
+	// check estake fee address == from addr
 	hostChainParams := m.GetHostChainParams(ctx)
-	if msg.PstakeAddress != hostChainParams.PstakeParams.PstakeFeeAddress {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, fmt.Sprintf("msg.pstakeAddress should be equal to msg.PstakeParams.PstakeFeeAddress, got %s expected %s", msg.PstakeAddress, hostChainParams.PstakeParams.PstakeFeeAddress))
+	if msg.EstakeAddress != hostChainParams.EstakeParams.EstakeFeeAddress {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, fmt.Sprintf("msg.estakeAddress should be equal to msg.EstakeParams.EstakeFeeAddress, got %s expected %s", msg.EstakeAddress, hostChainParams.EstakeParams.EstakeFeeAddress))
 	}
 
 	// check module disabled
@@ -416,7 +416,7 @@ func (m msgServer) JumpStart(goCtx context.Context, msg *types.MsgJumpStart) (*t
 	m.SetHostAccounts(ctx, msg.HostAccounts)
 
 	// check fees limits
-	if err := msg.PstakeParams.Validate(); err != nil {
+	if err := msg.EstakeParams.Validate(); err != nil {
 		return nil, err
 	}
 
@@ -453,9 +453,9 @@ func (m msgServer) JumpStart(goCtx context.Context, msg *types.MsgJumpStart) (*t
 	}
 
 	newHostChainParams := types.NewHostChainParams(msg.ChainID, msg.ConnectionID, msg.TransferChannel,
-		msg.TransferPort, msg.BaseDenom, msg.MintDenom, msg.PstakeParams.PstakeFeeAddress,
-		msg.MinDeposit, msg.PstakeParams.PstakeDepositFee, msg.PstakeParams.PstakeRestakeFee,
-		msg.PstakeParams.PstakeUnstakeFee, msg.PstakeParams.PstakeRedemptionFee)
+		msg.TransferPort, msg.BaseDenom, msg.MintDenom, msg.EstakeParams.EstakeFeeAddress,
+		msg.MinDeposit, msg.EstakeParams.EstakeDepositFee, msg.EstakeParams.EstakeRestakeFee,
+		msg.EstakeParams.EstakeUnstakeFee, msg.EstakeParams.EstakeRedemptionFee)
 
 	m.SetHostChainParams(ctx, newHostChainParams)
 	m.SetAllowListedValidators(ctx, msg.AllowListedValidators)
@@ -463,12 +463,12 @@ func (m msgServer) JumpStart(goCtx context.Context, msg *types.MsgJumpStart) (*t
 	ctx.EventManager().EmitEvents(sdktypes.Events{
 		sdktypes.NewEvent(
 			types.EventTypeJumpStart,
-			sdktypes.NewAttribute(types.AttributePstakeAddress, msg.PstakeAddress),
+			sdktypes.NewAttribute(types.AttributeEstakeAddress, msg.EstakeAddress),
 		),
 		sdktypes.NewEvent(
 			sdktypes.EventTypeMessage,
 			sdktypes.NewAttribute(sdktypes.AttributeKeyModule, types.AttributeValueCategory),
-			sdktypes.NewAttribute(sdktypes.AttributeKeySender, msg.PstakeAddress),
+			sdktypes.NewAttribute(sdktypes.AttributeKeySender, msg.EstakeAddress),
 		)},
 	)
 
@@ -530,8 +530,8 @@ func (m msgServer) ChangeModuleState(goCtx context.Context, msg *types.MsgChange
 	if hostChainParams.IsEmpty() {
 		return nil, types.ErrModuleNotInitialised
 	}
-	if hostChainParams.PstakeParams.PstakeFeeAddress != msg.PstakeAddress {
-		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, fmt.Sprintf("Only admin address is allowed to call this method, current admin address: %s", hostChainParams.PstakeParams.PstakeFeeAddress))
+	if hostChainParams.EstakeParams.EstakeFeeAddress != msg.EstakeAddress {
+		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, fmt.Sprintf("Only admin address is allowed to call this method, current admin address: %s", hostChainParams.EstakeParams.EstakeFeeAddress))
 	}
 	moduleState := m.Keeper.GetModuleState(ctx)
 	if moduleState == msg.ModuleState {
@@ -547,7 +547,7 @@ func (m msgServer) ChangeModuleState(goCtx context.Context, msg *types.MsgChange
 		sdktypes.NewEvent(
 			sdktypes.EventTypeMessage,
 			sdktypes.NewAttribute(sdktypes.AttributeKeyModule, types.AttributeValueCategory),
-			sdktypes.NewAttribute(sdktypes.AttributeKeySender, msg.PstakeAddress),
+			sdktypes.NewAttribute(sdktypes.AttributeKeySender, msg.EstakeAddress),
 		)},
 	)
 	return &types.MsgChangeModuleStateResponse{}, nil
@@ -567,8 +567,8 @@ func (m msgServer) ReportSlashing(goCtx context.Context, msg *types.MsgReportSla
 	if hostChainParams.IsEmpty() {
 		return nil, types.ErrModuleNotInitialised
 	}
-	if hostChainParams.PstakeParams.PstakeFeeAddress != msg.PstakeAddress {
-		return nil, errorsmod.Wrapf(sdkerrors.ErrUnauthorized, "Only admin address is allowed to call this method, current admin address: %s", hostChainParams.PstakeParams.PstakeFeeAddress)
+	if hostChainParams.EstakeParams.EstakeFeeAddress != msg.EstakeAddress {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrUnauthorized, "Only admin address is allowed to call this method, current admin address: %s", hostChainParams.EstakeParams.EstakeFeeAddress)
 	}
 
 	delegationState := m.Keeper.GetDelegationState(ctx)
@@ -608,7 +608,7 @@ func (m msgServer) ReportSlashing(goCtx context.Context, msg *types.MsgReportSla
 		sdktypes.NewEvent(
 			sdktypes.EventTypeMessage,
 			sdktypes.NewAttribute(sdktypes.AttributeKeyModule, types.AttributeValueCategory),
-			sdktypes.NewAttribute(sdktypes.AttributeKeySender, msg.PstakeAddress),
+			sdktypes.NewAttribute(sdktypes.AttributeKeySender, msg.EstakeAddress),
 		)},
 	)
 	return &types.MsgReportSlashingResponse{}, nil

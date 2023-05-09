@@ -14,15 +14,15 @@
       }
     ]
   },
-  "pstake_params": {
-    "pstake_deposit_fee": "0.00",
-    "pstake_restake_fee": "0.05",
-    "pstake_unstake_fee": "0.00",
-    "pstake_redemption_fee": "0.1",
-    "pstake_fee_address": "persistence108cqtjz7gqasctvrw74kewg6642062kmfuujsd"
+  "estake_params": {
+    "estake_deposit_fee": "0.00",
+    "estake_restake_fee": "0.05",
+    "estake_unstake_fee": "0.00",
+    "estake_redemption_fee": "0.1",
+    "estake_fee_address": "did:fury:e108cqtjz7gqasctvrw74kewg6642062kmfuujsd"
   },
   "host_accounts": {
-    "delegator_account_owner_i_d": "lscosmos_pstake_delegation_account",
-    "rewards_account_owner_i_d": "lscosmos_pstake_reward_account"
+    "delegator_account_owner_i_d": "lscosmos_estake_delegation_account",
+    "rewards_account_owner_i_d": "lscosmos_estake_reward_account"
   }
 }

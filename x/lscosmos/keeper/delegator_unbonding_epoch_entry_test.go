@@ -3,19 +3,19 @@ package keeper_test
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 func (suite *IntegrationTestSuite) TestKVStore() {
 	app, ctx := suite.app, suite.ctx
 
-	addr1, err := sdk.AccAddressFromBech32("persistence1826wkxx8wv7mfnank8l6xu9rxm7kg8rvvk4e0a")
+	addr1, err := sdk.AccAddressFromBech32("did:fury:e1826wkxx8wv7mfnank8l6xu9rxm7kg8rvvk4e0a")
 	suite.NoError(err)
 
-	addr2, err := sdk.AccAddressFromBech32("persistence1pss7nxeh3f9md2vuxku8q99femnwdjtcpe9ky9")
+	addr2, err := sdk.AccAddressFromBech32("did:fury:e1pss7nxeh3f9md2vuxku8q99femnwdjtcpe9ky9")
 	suite.NoError(err)
 
-	addr3, err := sdk.AccAddressFromBech32("persistence1lngwr8ymx3q6gtsff2h8407mawz9azp6kmut02")
+	addr3, err := sdk.AccAddressFromBech32("did:fury:e1lngwr8ymx3q6gtsff2h8407mawz9azp6kmut02")
 	suite.NoError(err)
 
 	testCases := []struct {

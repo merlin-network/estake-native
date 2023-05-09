@@ -12,24 +12,24 @@ import (
 
 const (
 	ProposalTypeMinDepositAndFeeChange    = "MinDepositAndFeeChange"
-	ProposalPstakeFeeAddressChange        = "PstakeFeeAddressChange"
+	ProposalEstakeFeeAddressChange        = "EstakeFeeAddressChange"
 	ProposalAllowListedValidatorSetChange = "AllowListedValidatorSetChange"
 )
 
 var (
 	_ govtypes.Content = &MinDepositAndFeeChangeProposal{}
-	_ govtypes.Content = &PstakeFeeAddressChangeProposal{}
+	_ govtypes.Content = &EstakeFeeAddressChangeProposal{}
 	_ govtypes.Content = &AllowListedValidatorSetChangeProposal{}
 )
 
 func init() {
 	govtypes.RegisterProposalType(ProposalTypeMinDepositAndFeeChange)
-	govtypes.RegisterProposalType(ProposalPstakeFeeAddressChange)
+	govtypes.RegisterProposalType(ProposalEstakeFeeAddressChange)
 	govtypes.RegisterProposalType(ProposalAllowListedValidatorSetChange)
 }
 
 // NewHostChainParams returns HostChainParams with the input provided
-func NewHostChainParams(chainID, connectionID, channel, port, baseDenom, mintDenom, pstakefeeAddress string, minDeposit math.Int, pstakeDepositFee, pstakeRestakeFee, pstakeUnstakeFee, pstakeRedemptionFee sdktypes.Dec) HostChainParams {
+func NewHostChainParams(chainID, connectionID, channel, port, baseDenom, mintDenom, estakefeeAddress string, minDeposit math.Int, estakeDepositFee, estakeRestakeFee, estakeUnstakeFee, estakeRedemptionFee sdktypes.Dec) HostChainParams {
 	return HostChainParams{
 		ChainID:         chainID,
 		ConnectionID:    connectionID,
@@ -38,12 +38,12 @@ func NewHostChainParams(chainID, connectionID, channel, port, baseDenom, mintDen
 		BaseDenom:       baseDenom,
 		MintDenom:       mintDenom,
 		MinDeposit:      minDeposit,
-		PstakeParams: PstakeParams{
-			PstakeDepositFee:    pstakeDepositFee,
-			PstakeRestakeFee:    pstakeRestakeFee,
-			PstakeUnstakeFee:    pstakeUnstakeFee,
-			PstakeRedemptionFee: pstakeRedemptionFee,
-			PstakeFeeAddress:    pstakefeeAddress,
+		EstakeParams: EstakeParams{
+			EstakeDepositFee:    estakeDepositFee,
+			EstakeRestakeFee:    estakeRestakeFee,
+			EstakeUnstakeFee:    estakeUnstakeFee,
+			EstakeRedemptionFee: estakeRedemptionFee,
+			EstakeFeeAddress:    estakefeeAddress,
 		},
 	}
 }
@@ -56,7 +56,7 @@ func (c *HostChainParams) IsEmpty() bool {
 		c.ChainID == "" ||
 		c.BaseDenom == "" ||
 		c.MintDenom == "" ||
-		c.PstakeParams.PstakeFeeAddress == "" {
+		c.EstakeParams.EstakeFeeAddress == "" {
 		return true
 	}
 	// can add more, but this should be good enough
@@ -65,17 +65,17 @@ func (c *HostChainParams) IsEmpty() bool {
 }
 
 // NewMinDepositAndFeeChangeProposal creates a protocol fee and min deposit change proposal.
-func NewMinDepositAndFeeChangeProposal(title, description string, minDeposit math.Int, pstakeDepositFee,
-	pstakeRestakeFee, pstakeUnstakeFee, pstakeRedemptionFee sdktypes.Dec) *MinDepositAndFeeChangeProposal {
+func NewMinDepositAndFeeChangeProposal(title, description string, minDeposit math.Int, estakeDepositFee,
+	estakeRestakeFee, estakeUnstakeFee, estakeRedemptionFee sdktypes.Dec) *MinDepositAndFeeChangeProposal {
 
 	return &MinDepositAndFeeChangeProposal{
 		Title:               title,
 		Description:         description,
 		MinDeposit:          minDeposit,
-		PstakeDepositFee:    pstakeDepositFee,
-		PstakeRestakeFee:    pstakeRestakeFee,
-		PstakeUnstakeFee:    pstakeUnstakeFee,
-		PstakeRedemptionFee: pstakeRedemptionFee,
+		EstakeDepositFee:    estakeDepositFee,
+		EstakeRestakeFee:    estakeRestakeFee,
+		EstakeUnstakeFee:    estakeUnstakeFee,
+		EstakeRedemptionFee: estakeRedemptionFee,
 	}
 }
 
@@ -106,20 +106,20 @@ func (m *MinDepositAndFeeChangeProposal) ValidateBasic() error {
 		return err
 	}
 
-	if m.PstakeDepositFee.IsNegative() || m.PstakeDepositFee.GTE(MaxPstakeDepositFee) {
-		return errorsmod.Wrapf(ErrInvalidFee, "pstake deposit fee must be between %s and %s", sdktypes.ZeroDec(), MaxPstakeDepositFee)
+	if m.EstakeDepositFee.IsNegative() || m.EstakeDepositFee.GTE(MaxEstakeDepositFee) {
+		return errorsmod.Wrapf(ErrInvalidFee, "estake deposit fee must be between %s and %s", sdktypes.ZeroDec(), MaxEstakeDepositFee)
 	}
 
-	if m.PstakeRestakeFee.IsNegative() || m.PstakeRestakeFee.GTE(MaxPstakeRestakeFee) {
-		return errorsmod.Wrapf(ErrInvalidFee, "pstake restake fee must be between %s and %s", sdktypes.ZeroDec(), MaxPstakeRestakeFee)
+	if m.EstakeRestakeFee.IsNegative() || m.EstakeRestakeFee.GTE(MaxEstakeRestakeFee) {
+		return errorsmod.Wrapf(ErrInvalidFee, "estake restake fee must be between %s and %s", sdktypes.ZeroDec(), MaxEstakeRestakeFee)
 	}
 
-	if m.PstakeUnstakeFee.IsNegative() || m.PstakeUnstakeFee.GTE(MaxPstakeUnstakeFee) {
-		return errorsmod.Wrapf(ErrInvalidFee, "pstake unstake fee must be between %s and %s", sdktypes.ZeroDec(), MaxPstakeUnstakeFee)
+	if m.EstakeUnstakeFee.IsNegative() || m.EstakeUnstakeFee.GTE(MaxEstakeUnstakeFee) {
+		return errorsmod.Wrapf(ErrInvalidFee, "estake unstake fee must be between %s and %s", sdktypes.ZeroDec(), MaxEstakeUnstakeFee)
 	}
 
-	if m.PstakeRedemptionFee.IsNegative() || m.PstakeRedemptionFee.GTE(MaxPstakeRedemptionFee) {
-		return errorsmod.Wrapf(ErrInvalidFee, "pstake redemption fee must be between %s and %s", sdktypes.ZeroDec(), MaxPstakeRedemptionFee)
+	if m.EstakeRedemptionFee.IsNegative() || m.EstakeRedemptionFee.GTE(MaxEstakeRedemptionFee) {
+		return errorsmod.Wrapf(ErrInvalidFee, "estake redemption fee must be between %s and %s", sdktypes.ZeroDec(), MaxEstakeRedemptionFee)
 	}
 
 	if m.MinDeposit.LTE(sdktypes.ZeroInt()) {
@@ -136,61 +136,61 @@ func (m *MinDepositAndFeeChangeProposal) String() string {
 Title:                 %s
 Description:           %s
 MinDeposit:             %s
-PstakeDepositFee:	   %s
-PstakeRestakeFee: 	   %s
-PstakeUnstakeFee: 	   %s
-PstakeRedemptionFee:   %s
+EstakeDepositFee:	   %s
+EstakeRestakeFee: 	   %s
+EstakeUnstakeFee: 	   %s
+EstakeRedemptionFee:   %s
 
 `,
 		m.Title,
 		m.Description,
 		m.MinDeposit,
-		m.PstakeDepositFee,
-		m.PstakeRestakeFee,
-		m.PstakeUnstakeFee,
-		m.PstakeRedemptionFee),
+		m.EstakeDepositFee,
+		m.EstakeRestakeFee,
+		m.EstakeUnstakeFee,
+		m.EstakeRedemptionFee),
 	)
 	return b.String()
 }
 
-// NewPstakeFeeAddressChangeProposal creates a pstake fee  address change proposal.
-func NewPstakeFeeAddressChangeProposal(title, description,
-	pstakeFeeAddress string) *PstakeFeeAddressChangeProposal {
-	return &PstakeFeeAddressChangeProposal{
+// NewEstakeFeeAddressChangeProposal creates a estake fee  address change proposal.
+func NewEstakeFeeAddressChangeProposal(title, description,
+	estakeFeeAddress string) *EstakeFeeAddressChangeProposal {
+	return &EstakeFeeAddressChangeProposal{
 		Title:            title,
 		Description:      description,
-		PstakeFeeAddress: pstakeFeeAddress,
+		EstakeFeeAddress: estakeFeeAddress,
 	}
 }
 
-// GetTitle returns the title of fee collector pstake fee address change proposal.
-func (m *PstakeFeeAddressChangeProposal) GetTitle() string {
+// GetTitle returns the title of fee collector estake fee address change proposal.
+func (m *EstakeFeeAddressChangeProposal) GetTitle() string {
 	return m.Title
 }
 
-// GetDescription returns the description of the pstake fee address proposal.
-func (m *PstakeFeeAddressChangeProposal) GetDescription() string {
+// GetDescription returns the description of the estake fee address proposal.
+func (m *EstakeFeeAddressChangeProposal) GetDescription() string {
 	return m.Description
 }
 
-// ProposalRoute returns the proposal-route of pstake fee address proposal.
-func (m *PstakeFeeAddressChangeProposal) ProposalRoute() string {
+// ProposalRoute returns the proposal-route of estake fee address proposal.
+func (m *EstakeFeeAddressChangeProposal) ProposalRoute() string {
 	return RouterKey
 }
 
-// ProposalType returns the proposal-type of pstake fee address change proposal.
-func (m *PstakeFeeAddressChangeProposal) ProposalType() string {
-	return ProposalPstakeFeeAddressChange
+// ProposalType returns the proposal-type of estake fee address change proposal.
+func (m *EstakeFeeAddressChangeProposal) ProposalType() string {
+	return ProposalEstakeFeeAddressChange
 }
 
 // ValidateBasic runs basic stateless validity checks
-func (m *PstakeFeeAddressChangeProposal) ValidateBasic() error {
+func (m *EstakeFeeAddressChangeProposal) ValidateBasic() error {
 	err := govtypes.ValidateAbstract(m)
 	if err != nil {
 		return err
 	}
 
-	_, err = sdktypes.AccAddressFromBech32(m.PstakeFeeAddress)
+	_, err = sdktypes.AccAddressFromBech32(m.EstakeFeeAddress)
 	if err != nil {
 		return err
 	}
@@ -199,17 +199,17 @@ func (m *PstakeFeeAddressChangeProposal) ValidateBasic() error {
 }
 
 // String returns the string of proposal details
-func (m *PstakeFeeAddressChangeProposal) String() string {
+func (m *EstakeFeeAddressChangeProposal) String() string {
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf(`PstakeFeeAddressChange:
+	b.WriteString(fmt.Sprintf(`EstakeFeeAddressChange:
 Title:                 %s
 Description:           %s
-PstakeFeeAddress: 	   %s
+EstakeFeeAddress: 	   %s
 
 `,
 		m.Title,
 		m.Description,
-		m.PstakeFeeAddress,
+		m.EstakeFeeAddress,
 	),
 	)
 	return b.String()
