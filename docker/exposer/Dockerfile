@@ -1,4 +1,4 @@
-ARG BASE_DOCKER_IMAGE=elysiumone/estake:latest
+ARG BASE_DOCKER_IMAGE=merlin-network/estake:latest
 FROM golang:1.19-alpine AS build-env
 
 # Set up dependencies

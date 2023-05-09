@@ -47,7 +47,7 @@ spec:
         - name: test-docker-creds
       containers:
         - name: faucet-estake
-          image: elysiumone/faucet
+          image: merlin-network/faucet
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -60,7 +60,7 @@ spec:
               cpu: "0.5"
               memory: "500M"
         - name: faucet-gaia
-          image: elysiumone/faucet
+          image: merlin-network/faucet
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

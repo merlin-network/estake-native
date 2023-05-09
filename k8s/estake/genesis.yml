@@ -60,7 +60,7 @@ spec:
         - name: test-docker-creds
       initContainers:
         - name: init-genesis
-          image: elysiumone/estake
+          image: merlin-network/estake
           imagePullPolicy: Always
           env:
             - name: COINS
@@ -154,7 +154,7 @@ spec:
               name: addresses
       containers:
         - name: validator
-          image: elysiumone/estake
+          image: merlin-network/estake
           imagePullPolicy: Always
           env:
             - name: CHAIN_ID
@@ -182,7 +182,7 @@ spec:
             - mountPath: /configs
               name: addresses
         - name: exposer-app
-          image: elysiumone/exposer:estake
+          image: merlin-network/exposer:estake
           imagePullPolicy: Always
           env:
             - name: HOME_DIR

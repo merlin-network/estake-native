@@ -1,5 +1,5 @@
 PROCESS=estake
-IMAGE_NAME=elysiumone/$(PROCESS)
+IMAGE_NAME=merlin-network/$(PROCESS)
 TAG_NAME=latest
 CONTAINER_NAME=container-$(PROCESS)
 FILE=Dockerfile

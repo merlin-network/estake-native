@@ -275,7 +275,7 @@ func (s *IntegrationTestSuite) runValidators(c *chain, portOffset int) {
 			Mounts: []string{
 				fmt.Sprintf("%s/:/root/.estaked", val.configDir()),
 			},
-			Repository: "elysiumone/estake-e2e",
+			Repository: "merlin-network/estake-e2e",
 		}
 
 		// expose the first validator for debugging and communication
