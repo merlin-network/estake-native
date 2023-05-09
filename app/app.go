@@ -101,6 +101,7 @@ import (
 	ibctesting "github.com/cosmos/ibc-go/v6/testing"
 	ibctestingtypes "github.com/cosmos/ibc-go/v6/testing/types"
 	"github.com/gorilla/mux"
+<<<<<<< HEAD
 	"github.com/persistenceOne/persistence-sdk/v2/x/epochs"
 	epochskeeper "github.com/persistenceOne/persistence-sdk/v2/x/epochs/keeper"
 	epochstypes "github.com/persistenceOne/persistence-sdk/v2/x/epochs/types"
@@ -110,6 +111,17 @@ import (
 	"github.com/persistenceOne/persistence-sdk/v2/x/interchainquery"
 	interchainquerykeeper "github.com/persistenceOne/persistence-sdk/v2/x/interchainquery/keeper"
 	interchainquerytypes "github.com/persistenceOne/persistence-sdk/v2/x/interchainquery/types"
+=======
+	"github.com/merlin-network/elysium-sdk/v2/x/epochs"
+	epochskeeper "github.com/merlin-network/elysium-sdk/v2/x/epochs/keeper"
+	epochstypes "github.com/merlin-network/elysium-sdk/v2/x/epochs/types"
+	"github.com/merlin-network/elysium-sdk/v2/x/ibchooker"
+	ibchookerkeeper "github.com/merlin-network/elysium-sdk/v2/x/ibchooker/keeper"
+	ibchookertypes "github.com/merlin-network/elysium-sdk/v2/x/ibchooker/types"
+	"github.com/merlin-network/elysium-sdk/v2/x/interchainquery"
+	interchainquerykeeper "github.com/merlin-network/elysium-sdk/v2/x/interchainquery/keeper"
+	interchainquerytypes "github.com/merlin-network/elysium-sdk/v2/x/interchainquery/types"
+>>>>>>> 4b25098 (::)
 	"github.com/rakyll/statik/fs"
 	"github.com/spf13/cast"
 	abci "github.com/tendermint/tendermint/abci/types"

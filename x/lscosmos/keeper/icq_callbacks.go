@@ -5,7 +5,11 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/gogo/protobuf/proto"
+<<<<<<< HEAD
 	icqtypes "github.com/persistenceOne/persistence-sdk/v2/x/interchainquery/types"
+=======
+	icqtypes "github.com/merlin-network/elysium-sdk/v2/x/interchainquery/types"
+>>>>>>> 4b25098 (::)
 
 	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
