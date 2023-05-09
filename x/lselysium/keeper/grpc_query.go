@@ -8,7 +8,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/merlin-network/estake-native/x/lselysium/types"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
 )
 
 // Querier is used as Keeper will have duplicate methods if used directly, and gRPC names take precedence over keeper.

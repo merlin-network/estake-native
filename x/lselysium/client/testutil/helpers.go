@@ -11,7 +11,7 @@ import (
 	govcli "github.com/cosmos/cosmos-sdk/x/gov/client/cli"
 	paramscli "github.com/cosmos/cosmos-sdk/x/params/client/cli"
 
-	"github.com/merlin-network/estake-native/x/lselysium/client/cli"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/client/cli"
 )
 
 var commonArgs = []string{

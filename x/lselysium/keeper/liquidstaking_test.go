@@ -1,15 +1,15 @@
 package keeper_test
 
 import (
+	"github.com/merlin-network/estake-native/v2/app/helpers"
 	"github.com/persistenceOne/persistence-sdk/v2/x/oracle/testutil"
-	"github.com/merlin-network/estake-native/app/helpers"
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"github.com/merlin-network/estake-native/x/lselysium/types"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
 )
 
 // tests LiquidStake, LiquidUnstake

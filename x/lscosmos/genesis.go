@@ -3,8 +3,8 @@ package lscosmos
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	host "github.com/cosmos/ibc-go/v6/modules/core/24-host"
-	"github.com/merlin-network/estake-native/x/lscosmos/keeper"
-	"github.com/merlin-network/estake-native/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/keeper"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

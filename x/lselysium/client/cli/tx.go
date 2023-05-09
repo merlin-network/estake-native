@@ -15,7 +15,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
 
-	"github.com/merlin-network/estake-native/x/lselysium/types"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
 )
 
 // GetTxCmd returns a root CLI command handler for all x/lselysium transaction commands.

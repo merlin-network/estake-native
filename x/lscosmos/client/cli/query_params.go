@@ -5,7 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/merlin-network/estake-native/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 	"github.com/spf13/cobra"
 )
 

@@ -10,9 +10,9 @@ import (
 	ibctesting "github.com/cosmos/ibc-go/v6/testing"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/merlin-network/estake-native/app"
-	"github.com/merlin-network/estake-native/app/helpers"
-	"github.com/merlin-network/estake-native/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/app"
+	"github.com/merlin-network/estake-native/v2/app/helpers"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 var (

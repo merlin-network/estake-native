@@ -19,5 +19,5 @@ done
 cd ..
 
 # move proto files to the right places
-cp -r github.com/merlin-network/estake-native/* ./
+cp -r github.com/merlin-network/estake-native/v2/* ./
 rm -rf github.com

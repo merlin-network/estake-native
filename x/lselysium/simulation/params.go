@@ -10,7 +10,7 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/merlin-network/estake-native/x/lselysium/types"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
 )
 
 // ParamChanges defines the parameters that can be modified by param change proposals

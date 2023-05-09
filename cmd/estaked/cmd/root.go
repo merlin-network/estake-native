@@ -29,8 +29,8 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
 
-	estakeApp "github.com/merlin-network/estake-native/app"
-	"github.com/merlin-network/estake-native/app/params"
+	estakeApp "github.com/merlin-network/estake-native/v2/app"
+	"github.com/merlin-network/estake-native/v2/app/params"
 )
 
 // NewRootCmd creates a new root command for simd. It is called once in the

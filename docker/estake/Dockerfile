@@ -4,7 +4,7 @@ FROM golang:1.19-alpine AS build-env
 ENV PACKAGES curl make git libc-dev bash gcc linux-headers eudev-dev python3
 
 # Set working directory for the build
-WORKDIR /go/src/github.com/merlin-network/estake-native
+WORKDIR /go/src/github.com/merlin-network/estake-native/v2
 
 # Add source files
 COPY . .

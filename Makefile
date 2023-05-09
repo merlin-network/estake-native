@@ -24,7 +24,7 @@ DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 TEST_DOCKER_REPO=mkoijn6/estakednode
 
-HTTPS_GIT := https://github.com/merlin-network/estake-native.git
+HTTPS_GIT := https://github.com/merlin-network/estake-native/v2.git
 DOCKER := $(shell which docker)
 DOCKER_BUF := $(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace bufbuild/buf
 

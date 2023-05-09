@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/merlin-network/estake-native/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
 )
 
 // InitGenesis initializes the liquidstakeibc module's state from a given genesis state.

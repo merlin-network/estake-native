@@ -7,7 +7,7 @@ import "estake/liquidstakeibc/v1beta1/params.proto";
 
 // this line is used by starport scaffolding # 1
 
-option go_package = "github.com/merlin-network/estake-native/x/liquidstakeibc/types";
+option go_package = "github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types";
 
 // Query defines the gRPC querier service.
 service Query {

@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/merlin-network/estake-native/app/params"
+	"github.com/merlin-network/estake-native/v2/app/params"
 
 	"github.com/cosmos/cosmos-sdk/std"
 )

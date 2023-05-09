@@ -16,8 +16,8 @@ import (
 	tmrand "github.com/tendermint/tendermint/libs/rand"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	estakeapp "github.com/merlin-network/estake-native/app"
-	estakehelpers "github.com/merlin-network/estake-native/app/helpers"
+	estakeapp "github.com/merlin-network/estake-native/v2/app"
+	estakehelpers "github.com/merlin-network/estake-native/v2/app/helpers"
 )
 
 type IntegrationTestSuite struct {

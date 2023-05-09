@@ -9,7 +9,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/persistenceOne/persistence-sdk/v2/utils"
 
-	lscosmostypes "github.com/merlin-network/estake-native/x/lscosmos/types"
+	lscosmostypes "github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 // BeginBlock will use utils.ApplyFuncIfNoError to apply the changes made by the functions

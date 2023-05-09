@@ -6,8 +6,8 @@ import (
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	"github.com/stretchr/testify/require"
 
-	app "github.com/merlin-network/estake-native/app"
-	"github.com/merlin-network/estake-native/cmd/estaked/cmd"
+	app "github.com/merlin-network/estake-native/v2/app"
+	"github.com/merlin-network/estake-native/v2/cmd/estaked/cmd"
 )
 
 func TestRootCmdConfig(t *testing.T) {

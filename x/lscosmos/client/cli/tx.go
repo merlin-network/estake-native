@@ -13,8 +13,8 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"github.com/spf13/cobra"
 
-	"github.com/merlin-network/estake-native/x/lscosmos/client/utils"
-	"github.com/merlin-network/estake-native/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/client/utils"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 // GetTxCmd returns the transaction commands for this module

@@ -6,8 +6,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 
-	"github.com/merlin-network/estake-native/x/lscosmos/keeper"
-	"github.com/merlin-network/estake-native/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/keeper"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 // NewLSCosmosProposalHandler creates a new governance Handler for lscosmos module

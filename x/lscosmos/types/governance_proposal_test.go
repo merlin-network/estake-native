@@ -11,8 +11,8 @@ import (
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"github.com/stretchr/testify/require"
 
-	"github.com/merlin-network/estake-native/app"
-	"github.com/merlin-network/estake-native/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/app"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 func init() {

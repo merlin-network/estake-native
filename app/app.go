@@ -118,18 +118,18 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	estakeante "github.com/merlin-network/estake-native/ante"
-	estakeappparams "github.com/merlin-network/estake-native/app/params"
-	"github.com/merlin-network/estake-native/x/liquidstakeibc"
-	liquidstakeibckeeper "github.com/merlin-network/estake-native/x/liquidstakeibc/keeper"
-	liquidstakeibctypes "github.com/merlin-network/estake-native/x/liquidstakeibc/types"
-	"github.com/merlin-network/estake-native/x/lscosmos"
-	lscosmosclient "github.com/merlin-network/estake-native/x/lscosmos/client"
-	lscosmoskeeper "github.com/merlin-network/estake-native/x/lscosmos/keeper"
-	lscosmostypes "github.com/merlin-network/estake-native/x/lscosmos/types"
-	"github.com/merlin-network/estake-native/x/lselysium"
-	lselysiumkeeper "github.com/merlin-network/estake-native/x/lselysium/keeper"
-	lselysiumtypes "github.com/merlin-network/estake-native/x/lselysium/types"
+	estakeante "github.com/merlin-network/estake-native/v2/ante"
+	estakeappparams "github.com/merlin-network/estake-native/v2/app/params"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc"
+	liquidstakeibckeeper "github.com/merlin-network/estake-native/v2/x/liquidstakeibc/keeper"
+	liquidstakeibctypes "github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos"
+	lscosmosclient "github.com/merlin-network/estake-native/v2/x/lscosmos/client"
+	lscosmoskeeper "github.com/merlin-network/estake-native/v2/x/lscosmos/keeper"
+	lscosmostypes "github.com/merlin-network/estake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lselysium"
+	lselysiumkeeper "github.com/merlin-network/estake-native/v2/x/lselysium/keeper"
+	lselysiumtypes "github.com/merlin-network/estake-native/v2/x/lselysium/types"
 )
 
 var (
@@ -195,7 +195,7 @@ var (
 		lscosmostypes.UndelegationModuleAccount:  nil,
 		lscosmostypes.RewardBoosterModuleAccount: nil, //legacy, blocklist, no permissions
 		liquidstakeibctypes.ModuleName:           nil,
-		lselysiumtypes.ModuleName:            {authtypes.Minter, authtypes.Burner},
+		lselysiumtypes.ModuleName:                {authtypes.Minter, authtypes.Burner},
 	}
 
 	receiveAllowedMAcc = map[string]bool{
@@ -253,7 +253,7 @@ type EstakeApp struct {
 	LSCosmosKeeper        lscosmoskeeper.Keeper
 	InterchainQueryKeeper interchainquerykeeper.Keeper
 	LiquidStakeIBCKeeper  liquidstakeibckeeper.Keeper
-	LSElysiumKeeper   lselysiumkeeper.Keeper
+	LSElysiumKeeper       lselysiumkeeper.Keeper
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper           capabilitykeeper.ScopedKeeper

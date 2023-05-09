@@ -8,9 +8,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"github.com/merlin-network/estake-native/app/params"
-	"github.com/merlin-network/estake-native/x/lselysium/keeper"
-	"github.com/merlin-network/estake-native/x/lselysium/types"
+	"github.com/merlin-network/estake-native/v2/app/params"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/keeper"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
 )
 
 // Simulation operation weights constants.

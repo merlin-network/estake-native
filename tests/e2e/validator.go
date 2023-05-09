@@ -24,7 +24,7 @@ import (
 	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
 
-	estake "github.com/merlin-network/estake-native/app"
+	estake "github.com/merlin-network/estake-native/v2/app"
 )
 
 type validator struct {

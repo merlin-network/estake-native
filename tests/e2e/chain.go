@@ -12,8 +12,8 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	tmrand "github.com/tendermint/tendermint/libs/rand"
 
-	estakeApp "github.com/merlin-network/estake-native/app"
-	"github.com/merlin-network/estake-native/app/params"
+	estakeApp "github.com/merlin-network/estake-native/v2/app"
+	"github.com/merlin-network/estake-native/v2/app/params"
 )
 
 const (

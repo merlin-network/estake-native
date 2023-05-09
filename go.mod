@@ -1,4 +1,4 @@
-module github.com/merlin-network/estake-native
+module github.com/merlin-network/estake-native/v2
 
 go 1.19
 

@@ -2,7 +2,7 @@ ARG IMG_TAG=latest
 
 # Compile the gaiad binary
 FROM golang:1.19-alpine AS builder
-WORKDIR /go/src/github.com/merlin-network/estake-native
+WORKDIR /go/src/github.com/merlin-network/estake-native/v2
 COPY go.mod go.sum* ./
 RUN go mod download
 COPY . .

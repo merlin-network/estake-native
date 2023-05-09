@@ -22,11 +22,11 @@ import (
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 	tmdb "github.com/tendermint/tm-db"
 
-	chain "github.com/merlin-network/estake-native/app"
-	testhelpers "github.com/merlin-network/estake-native/app/helpers"
-	"github.com/merlin-network/estake-native/app/params"
-	"github.com/merlin-network/estake-native/x/lselysium/client/cli"
-	"github.com/merlin-network/estake-native/x/lselysium/types"
+	chain "github.com/merlin-network/estake-native/v2/app"
+	testhelpers "github.com/merlin-network/estake-native/v2/app/helpers"
+	"github.com/merlin-network/estake-native/v2/app/params"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/client/cli"
+	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
 )
 
 type IntegrationTestSuite struct {

@@ -18,10 +18,10 @@ import (
 	"github.com/spf13/cobra"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/merlin-network/estake-native/x/liquidstakeibc/client"
-	"github.com/merlin-network/estake-native/x/liquidstakeibc/keeper"
-	"github.com/merlin-network/estake-native/x/liquidstakeibc/simulation"
-	"github.com/merlin-network/estake-native/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/client"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/keeper"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/simulation"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
 )
 
 var (

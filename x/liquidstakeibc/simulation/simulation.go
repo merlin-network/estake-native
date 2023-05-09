@@ -10,9 +10,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	simappparams "github.com/merlin-network/estake-native/app/params"
+	simappparams "github.com/merlin-network/estake-native/v2/app/params"
 
-	"github.com/merlin-network/estake-native/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
 )
 
 // Simulation operation weights constants
