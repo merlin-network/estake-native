@@ -1,0 +1,28 @@
+{
+  "chain_id": "test-1",
+  "connection_id": "connection-0",
+  "transfer_channel": "channel-0",
+  "transfer_port": "transfer",
+  "base_denom": "uatom",
+  "mint_denom": "stk/uatom",
+  "min_deposit": "1",
+  "allow_listed_validators": {
+    "allow_listed_validators": [
+      {
+        "validator_address": "cosmosvaloper1hcqg5wj9t42zawqkqucs7la85ffyv08le09ljt",
+        "target_weight": "1"
+      }
+    ]
+  },
+  "estake_params": {
+    "estake_deposit_fee": "0.00",
+    "estake_restake_fee": "0.05",
+    "estake_unstake_fee": "0.00",
+    "estake_redemption_fee": "0.1",
+    "estake_fee_address": "did:fury:e108cqtjz7gqasctvrw74kewg6642062kmfuujsd"
+  },
+  "host_accounts": {
+    "delegator_account_owner_i_d": "lscosmos_estake_delegation_account",
+    "rewards_account_owner_i_d": "lscosmos_estake_reward_account"
+  }
+}
