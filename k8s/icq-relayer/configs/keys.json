@@ -1,7 +1,11 @@
 {
   "chains": [
     {
+<<<<<<< HEAD
       "keyname": "perKey",
+=======
+      "keyname": "elyKey",
+>>>>>>> 4b25098 (::)
       "name": "elysium",
       "id": "estaked-1",
       "hdpath": "m/44'/118'/0'/0/0",
