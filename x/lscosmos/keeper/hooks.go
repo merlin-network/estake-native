@@ -11,9 +11,9 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v6/modules/core/04-channel/types"
 	ibcexported "github.com/cosmos/ibc-go/v6/modules/core/exported"
 	"github.com/gogo/protobuf/proto"
-	"github.com/persistenceOne/persistence-sdk/v2/utils"
-	epochstypes "github.com/persistenceOne/persistence-sdk/v2/x/epochs/types"
-	ibchookertypes "github.com/persistenceOne/persistence-sdk/v2/x/ibchooker/types"
+	"github.com/merlin-network/elysium-sdk/v2/utils"
+	epochstypes "github.com/merlin-network/elysium-sdk/v2/x/epochs/types"
+	ibchookertypes "github.com/merlin-network/elysium-sdk/v2/x/ibchooker/types"
 
 	lscosmostypes "github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
