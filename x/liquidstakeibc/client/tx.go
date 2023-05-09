@@ -8,14 +8,14 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/spf13/cobra"
 
-	"github.com/persistenceOne/pstake-native/v2/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
 )
 
 // NewTxCmd returns a root CLI command handler for all liquid staking transaction commands.
 func NewTxCmd() *cobra.Command {
 	txCmd := &cobra.Command{
 		Use:                        types.ModuleName,
-		Short:                      "Pstake liquid staking ibc transaction subcommands",
+		Short:                      "Estake liquid staking ibc transaction subcommands",
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,

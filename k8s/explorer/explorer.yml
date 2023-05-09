@@ -44,7 +44,7 @@ spec:
         - name: test-docker-creds
       containers:
         - name: ping-pub-explorer
-          image: persistenceone/ping-pub-explorer
+          image: elysiumone/ping-pub-explorer
           imagePullPolicy: Always
           resources:
             limits:

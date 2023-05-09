@@ -76,8 +76,8 @@ func (s *IntegrationTestSuite) SetupSuite() {
 
 	// The boostrapping phase is as follows:
 	//
-	// 1. Initialize PStake validator nodes.
-	// 2. Create and initialize PStake validator genesis files (both chains)
+	// 1. Initialize EStake validator nodes.
+	// 2. Create and initialize EStake validator genesis files (both chains)
 	// 3. Start both networks.
 	// 4. Create and run IBC relayer (Hermes) containers.
 
@@ -97,7 +97,7 @@ func (s *IntegrationTestSuite) SetupSuite() {
 }
 
 func (s *IntegrationTestSuite) TearDownSuite() {
-	if str := os.Getenv("PSTAKE_E2E_SKIP_CLEANUP"); len(str) > 0 {
+	if str := os.Getenv("ESTAKE_E2E_SKIP_CLEANUP"); len(str) > 0 {
 		skipCleanup, err := strconv.ParseBool(str)
 		s.Require().NoError(err)
 
@@ -265,7 +265,7 @@ func (s *IntegrationTestSuite) initValidatorConfigs(c *chain) {
 }
 
 func (s *IntegrationTestSuite) runValidators(c *chain, portOffset int) {
-	s.T().Logf("starting PStake %s validator containers...", c.id)
+	s.T().Logf("starting EStake %s validator containers...", c.id)
 
 	s.valResources[c.id] = make([]*dockertest.Resource, len(c.validators))
 	for i, val := range c.validators {
@@ -273,9 +273,9 @@ func (s *IntegrationTestSuite) runValidators(c *chain, portOffset int) {
 			Name:      val.instanceName(),
 			NetworkID: s.dkrNet.Network.ID,
 			Mounts: []string{
-				fmt.Sprintf("%s/:/root/.pstaked", val.configDir()),
+				fmt.Sprintf("%s/:/root/.estaked", val.configDir()),
 			},
-			Repository: "persistenceone/pstake-e2e",
+			Repository: "elysiumone/estake-e2e",
 		}
 
 		// expose the first validator for debugging and communication
@@ -298,7 +298,7 @@ func (s *IntegrationTestSuite) runValidators(c *chain, portOffset int) {
 		s.Require().NoError(err)
 
 		s.valResources[c.id][i] = resource
-		s.T().Logf("started PStake %s validator container: %s", c.id, resource.Container.ID)
+		s.T().Logf("started EStake %s validator container: %s", c.id, resource.Container.ID)
 	}
 
 	rpcClient, err := rpchttp.New("tcp://localhost:26657", "/websocket")
@@ -323,19 +323,19 @@ func (s *IntegrationTestSuite) runValidators(c *chain, portOffset int) {
 		},
 		5*time.Minute,
 		time.Second,
-		"PStake node failed to produce blocks",
+		"EStake node failed to produce blocks",
 	)
 }
 
 func (s *IntegrationTestSuite) runIBCRelayer() {
 	s.T().Log("starting Hermes relayer container...")
 
-	tmpDir, err := ioutil.TempDir("", "pstake-e2e-testnet-hermes-")
+	tmpDir, err := ioutil.TempDir("", "estake-e2e-testnet-hermes-")
 	s.Require().NoError(err)
 	s.tmpDirs = append(s.tmpDirs, tmpDir)
 
-	pstakeAVal := s.chainA.validators[0]
-	pstakeBVal := s.chainB.validators[0]
+	estakeAVal := s.chainA.validators[0]
+	estakeBVal := s.chainB.validators[0]
 	hermesCfgPath := path.Join(tmpDir, "hermes")
 
 	s.Require().NoError(os.MkdirAll(hermesCfgPath, 0755))
@@ -358,12 +358,12 @@ func (s *IntegrationTestSuite) runIBCRelayer() {
 				"3031/tcp": {{HostIP: "", HostPort: "3036"}},
 			},
 			Env: []string{
-				fmt.Sprintf("PSTAKE_A_E2E_CHAIN_ID=%s", s.chainA.id),
-				fmt.Sprintf("PSTAKE_B_E2E_CHAIN_ID=%s", s.chainB.id),
-				fmt.Sprintf("PSTAKE_A_E2E_VAL_MNEMONIC=%s", pstakeAVal.mnemonic),
-				fmt.Sprintf("PSTAKE_B_E2E_VAL_MNEMONIC=%s", pstakeBVal.mnemonic),
-				fmt.Sprintf("PSTAKE_A_E2E_VAL_HOST=%s", s.valResources[s.chainA.id][0].Container.Name[1:]),
-				fmt.Sprintf("PSTAKE_B_E2E_VAL_HOST=%s", s.valResources[s.chainB.id][0].Container.Name[1:]),
+				fmt.Sprintf("ESTAKE_A_E2E_CHAIN_ID=%s", s.chainA.id),
+				fmt.Sprintf("ESTAKE_B_E2E_CHAIN_ID=%s", s.chainB.id),
+				fmt.Sprintf("ESTAKE_A_E2E_VAL_MNEMONIC=%s", estakeAVal.mnemonic),
+				fmt.Sprintf("ESTAKE_B_E2E_VAL_MNEMONIC=%s", estakeBVal.mnemonic),
+				fmt.Sprintf("ESTAKE_A_E2E_VAL_HOST=%s", s.valResources[s.chainA.id][0].Container.Name[1:]),
+				fmt.Sprintf("ESTAKE_B_E2E_VAL_HOST=%s", s.valResources[s.chainB.id][0].Container.Name[1:]),
 			},
 			Entrypoint: []string{
 				"sh",
@@ -411,7 +411,7 @@ func (s *IntegrationTestSuite) runIBCRelayer() {
 	// transport errors.
 	time.Sleep(10 * time.Second)
 
-	// create the client, connection and channel between the two PStake chains
+	// create the client, connection and channel between the two EStake chains
 	s.connectIBCChains()
 }
 

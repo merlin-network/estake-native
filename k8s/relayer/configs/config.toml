@@ -116,17 +116,17 @@ trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
 
 [[chains]]
-id = 'pstaked-1'
-rpc_addr = 'http://pstake-genesis.dev-native.svc.cluster.local:26657'
-grpc_addr = 'http://pstake-genesis.dev-native.svc.cluster.local:9090'
-websocket_addr = 'ws://pstake-genesis.dev-native.svc.cluster.local:26657/websocket'
+id = 'estaked-1'
+rpc_addr = 'http://estake-genesis.dev-native.svc.cluster.local:26657'
+grpc_addr = 'http://estake-genesis.dev-native.svc.cluster.local:9090'
+websocket_addr = 'ws://estake-genesis.dev-native.svc.cluster.local:26657/websocket'
 rpc_timeout = '10s'
-account_prefix = 'persistence'
-key_name = 'persistence'
+account_prefix = 'did:fury:e'
+key_name = 'elysium'
 store_prefix = 'ibc'
 default_gas = 500000
 max_gas = 1000000
-gas_price = { price = 0.001, denom = 'uxprt' }
+gas_price = { price = 0.001, denom = 'ufury' }
 gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 2097152

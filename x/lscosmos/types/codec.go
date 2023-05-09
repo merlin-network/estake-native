@@ -13,7 +13,7 @@ import (
 // on the provided LegacyAmino codec. These types are used for Amino JSON serialization.
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MinDepositAndFeeChangeProposal{}, "cosmos/MinDepositAndFeeChangeProposal", nil)
-	cdc.RegisterConcrete(&PstakeFeeAddressChangeProposal{}, "cosmos/PstakeFeeAddressChangeProposal", nil)
+	cdc.RegisterConcrete(&EstakeFeeAddressChangeProposal{}, "cosmos/EstakeFeeAddressChangeProposal", nil)
 	cdc.RegisterConcrete(&AllowListedValidatorSetChangeProposal{}, "cosmos/AllowListedValidatorSetChangeProposal", nil)
 	cdc.RegisterConcrete(&MsgLiquidStake{}, "cosmos/MsgLiquidStake", nil)
 	cdc.RegisterConcrete(&MsgLiquidUnstake{}, "cosmos/MsgLiquidUnstake", nil)
@@ -41,7 +41,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*govtypes.Content)(nil),
 		// add the stucts that implements govTypes.Content interface
 		&MinDepositAndFeeChangeProposal{},
-		&PstakeFeeAddressChangeProposal{},
+		&EstakeFeeAddressChangeProposal{},
 		&AllowListedValidatorSetChangeProposal{},
 	)
 

@@ -8,7 +8,7 @@ metadata:
 spec:
   clusterIP: None
   ports:
-    - name: faucet-pstake
+    - name: faucet-estake
       port: 5000
       protocol: TCP
       targetPort: 5000
@@ -46,12 +46,12 @@ spec:
       imagePullSecrets:
         - name: test-docker-creds
       containers:
-        - name: faucet-pstake
-          image: persistenceone/faucet
+        - name: faucet-estake
+          image: elysiumone/faucet
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
-                name: faucet-pstake
+                name: faucet-estake
           resources:
             limits:
               cpu: "1"
@@ -60,7 +60,7 @@ spec:
               cpu: "0.5"
               memory: "500M"
         - name: faucet-gaia
-          image: persistenceone/faucet
+          image: elysiumone/faucet
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

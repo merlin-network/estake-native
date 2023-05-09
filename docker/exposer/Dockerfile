@@ -1,4 +1,4 @@
-ARG BASE_DOCKER_IMAGE=persistenceone/pstake:latest
+ARG BASE_DOCKER_IMAGE=elysiumone/estake:latest
 FROM golang:1.19-alpine AS build-env
 
 # Set up dependencies

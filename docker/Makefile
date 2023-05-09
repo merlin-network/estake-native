@@ -1,17 +1,17 @@
-PROCESS=pstake
-IMAGE_NAME=persistenceone/$(PROCESS)
+PROCESS=estake
+IMAGE_NAME=elysiumone/$(PROCESS)
 TAG_NAME=latest
 CONTAINER_NAME=container-$(PROCESS)
 FILE=Dockerfile
 
 _DOCKER_ENV=\
-	-e CHAIN_ID=pstake \
-	-e PSTAKE_DIR=/pstaked \
+	-e CHAIN_ID=estake \
+	-e ESTAKE_DIR=/estaked \
 	-e COINS="100000000000000000stake" \
 	$(DOCKER_ENV)
 _DOCKER_VOLUME=\
-    -v $(PWD):/pstake \
-	-v $(PWD)/k8s/pstake/configs:/configs \
+    -v $(PWD):/estake \
+	-v $(PWD)/k8s/estake/configs:/configs \
 	-v /tmp:/tmp \
 	$(DOCKER_VOLUME)
 _DOCKER_ARGS=\

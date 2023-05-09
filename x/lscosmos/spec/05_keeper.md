@@ -88,7 +88,7 @@ type Keeper interface{
 	GetRewardBoosterModuleAccount(ctx types.Context) types.ModuleAccountI
 	MintTokens(ctx types.Context, mintCoin types.Coin, delegatorAddress types.AccAddress) error
 	SendTokensToDepositModule(ctx types.Context, depositCoin types.Coins, senderAddress types.AccAddress) error
-	SendProtocolFee(ctx types.Context, protocolFee types.Coins, moduleAccount string, pstakeFeeAddressString string) error
+	SendProtocolFee(ctx types.Context, protocolFee types.Coins, moduleAccount string, estakeFeeAddressString string) error
 	
 	// Delegator unbonding epoch entry
 	SetDelegatorUnbondingEpochEntry(ctx types.Context, unbondingEpochEntry types.DelegatorUnbondingEpochEntry)

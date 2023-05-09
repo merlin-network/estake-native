@@ -1,5 +1,5 @@
 /*
- Copyright [2019] - [2021], PERSISTENCE TECHNOLOGIES PTE. LTD. and the persistenceCore contributors
+ Copyright [2019] - [2021], ELYSIUM TECHNOLOGIES PTE. LTD. and the elysiumCore contributors
  SPDX-License-Identifier: Apache-2.0
 */
 
@@ -13,13 +13,13 @@ import (
 )
 
 const (
-	Bech32MainPrefix = "persistence"
+	Bech32MainPrefix = "did:fury:e"
 	CoinType         = 118
 	Purpose          = 44
 
-	HumanCoinUnit = "xprt"
-	BaseCoinUnit  = "uxprt"
-	XPRTExponent  = 6
+	HumanCoinUnit = "fury"
+	BaseCoinUnit  = "ufury"
+	FURYExponent  = 6
 
 	Bech32PrefixAccAddr  = Bech32MainPrefix
 	Bech32PrefixAccPub   = Bech32MainPrefix + sdkTypes.PrefixPublic
@@ -39,7 +39,7 @@ func RegisterDenoms() {
 	if err != nil {
 		panic(err)
 	}
-	err = sdkTypes.RegisterDenom(BaseCoinUnit, sdkTypes.NewDecWithPrec(1, XPRTExponent))
+	err = sdkTypes.RegisterDenom(BaseCoinUnit, sdkTypes.NewDecWithPrec(1, FURYExponent))
 	if err != nil {
 		panic(err)
 	}

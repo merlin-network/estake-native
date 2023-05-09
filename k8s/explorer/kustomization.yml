@@ -12,4 +12,4 @@ configMapGenerator:
   - name: chain-configs
     files:
       - configs/gaia.json
-      - configs/pstake.json
+      - configs/estake.json

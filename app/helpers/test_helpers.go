@@ -36,13 +36,13 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/persistenceOne/pstake-native/v2/app"
-	appparams "github.com/persistenceOne/pstake-native/v2/app/params"
+	"github.com/merlin-network/estake-native/v2/app"
+	appparams "github.com/merlin-network/estake-native/v2/app/params"
 )
 
 // SimAppChainID hardcoded chainID for simulation
 const (
-	SimAppChainID = "pstake-app"
+	SimAppChainID = "estake-app"
 )
 
 var DefaultConsensusParams = &abci.ConsensusParams{
@@ -62,12 +62,12 @@ var DefaultConsensusParams = &abci.ConsensusParams{
 	},
 }
 
-func newTestApp(t *testing.T, isCheckTx bool, _ bool) app.PstakeApp {
+func newTestApp(t *testing.T, isCheckTx bool, _ bool) app.EstakeApp {
 	testApp := Setup(t, isCheckTx, 5)
 	return *testApp
 }
 
-func CreateTestApp(t *testing.T) (*codec.LegacyAmino, app.PstakeApp, sdk.Context) {
+func CreateTestApp(t *testing.T) (*codec.LegacyAmino, app.EstakeApp, sdk.Context) {
 	testApp := newTestApp(t, false, false)
 	ctx := testApp.BaseApp.NewContext(false, tmproto.Header{})
 
@@ -78,10 +78,10 @@ type EmptyAppOptions struct{}
 
 func (EmptyAppOptions) Get(o string) interface{} { return nil }
 
-func setup(withGenesis bool, invCheckPeriod uint) (*app.PstakeApp, app.GenesisState) {
+func setup(withGenesis bool, invCheckPeriod uint) (*app.EstakeApp, app.GenesisState) {
 	db := dbm.NewMemDB()
 	encCdc := app.MakeEncodingConfig()
-	testApp := app.NewpStakeApp(
+	testApp := app.NeweStakeApp(
 		log.NewNopLogger(),
 		db,
 		nil,
@@ -102,7 +102,7 @@ func setup(withGenesis bool, invCheckPeriod uint) (*app.PstakeApp, app.GenesisSt
 // SetupTestingApp initializes the IBC-go testing application
 func SetupTestingApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
 	db := dbm.NewMemDB()
-	newpStakeApp := app.NewpStakeApp(
+	neweStakeApp := app.NeweStakeApp(
 		log.NewNopLogger(),
 		db,
 		nil,
@@ -113,11 +113,11 @@ func SetupTestingApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
 		app.MakeEncodingConfig(),
 		EmptyAppOptions{},
 	)
-	return newpStakeApp, app.NewDefaultGenesisState()
+	return neweStakeApp, app.NewDefaultGenesisState()
 }
 
 // Setup initializes a new SimApp. A Nop logger is set in SimApp.
-func Setup(t *testing.T, isCheckTx bool, invCheckPeriod uint) *app.PstakeApp {
+func Setup(t *testing.T, isCheckTx bool, invCheckPeriod uint) *app.EstakeApp {
 	t.Helper()
 
 	privVal := mock.NewPV()
@@ -142,7 +142,7 @@ func Setup(t *testing.T, isCheckTx bool, invCheckPeriod uint) *app.PstakeApp {
 }
 
 func genesisStateWithValSet(t *testing.T,
-	app *app.PstakeApp, genesisState app.GenesisState,
+	app *app.EstakeApp, genesisState app.GenesisState,
 	valSet *tmtypes.ValidatorSet, genAccs []authtypes.GenesisAccount,
 	balances ...banktypes.Balance,
 ) app.GenesisState {
@@ -209,7 +209,7 @@ func genesisStateWithValSet(t *testing.T,
 // that also act as delegators. For simplicity, each validator is bonded with a delegation
 // of one consensus engine unit in the default token of the simapp from first genesis
 // account. A Nop logger is set in SimApp.
-func SetupWithGenesisValSet(t *testing.T, valSet *tmtypes.ValidatorSet, genAccs []authtypes.GenesisAccount, balances ...banktypes.Balance) *app.PstakeApp {
+func SetupWithGenesisValSet(t *testing.T, valSet *tmtypes.ValidatorSet, genAccs []authtypes.GenesisAccount, balances ...banktypes.Balance) *app.EstakeApp {
 	t.Helper()
 
 	app, genesisState := setup(true, 5)
@@ -256,7 +256,7 @@ func NewConfig(dbm *dbm.MemDB) network.Config {
 func NewAppConstructor(encodingCfg appparams.EncodingConfig, db *dbm.MemDB) network.AppConstructor {
 	return func(val network.Validator) types.Application {
 
-		return app.NewpStakeApp(
+		return app.NeweStakeApp(
 			val.Ctx.Logger, db, nil, true, make(map[int64]bool), val.Ctx.Config.RootDir, 0,
 			app.MakeEncodingConfig(),
 			EmptyAppOptions{},
@@ -299,7 +299,7 @@ func createIncrementalAccounts(accNum int) []sdk.AccAddress {
 }
 
 // AddTestAddrsFromPubKeys adds the addresses into the App providing only the public keys.
-func AddTestAddrsFromPubKeys(app *app.PstakeApp, ctx sdk.Context, pubKeys []cryptotypes.PubKey, accAmt math.Int) {
+func AddTestAddrsFromPubKeys(app *app.EstakeApp, ctx sdk.Context, pubKeys []cryptotypes.PubKey, accAmt math.Int) {
 	initCoins := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, accAmt))
 
 	for _, pk := range pubKeys {
@@ -309,19 +309,19 @@ func AddTestAddrsFromPubKeys(app *app.PstakeApp, ctx sdk.Context, pubKeys []cryp
 
 // AddTestAddrs constructs and returns accNum amount of accounts with an
 // initial balance of accAmt in random order
-func AddTestAddrs(app *app.PstakeApp, ctx sdk.Context, accNum int, accAmt math.Int) []sdk.AccAddress {
+func AddTestAddrs(app *app.EstakeApp, ctx sdk.Context, accNum int, accAmt math.Int) []sdk.AccAddress {
 	return addTestAddrs(app, ctx, accNum, accAmt, createRandomAccounts)
 }
 
 // AddTestAddrs constructs and returns accNum amount of accounts with an
 // initial balance of accAmt in random order
-func AddTestAddrsIncremental(app *app.PstakeApp, ctx sdk.Context, accNum int, accAmt math.Int) []sdk.AccAddress {
+func AddTestAddrsIncremental(app *app.EstakeApp, ctx sdk.Context, accNum int, accAmt math.Int) []sdk.AccAddress {
 	return addTestAddrs(app, ctx, accNum, accAmt, createIncrementalAccounts)
 }
 
 type GenerateAccountStrategy func(int) []sdk.AccAddress
 
-func addTestAddrs(app *app.PstakeApp, ctx sdk.Context, accNum int, accAmt math.Int, strategy GenerateAccountStrategy) []sdk.AccAddress {
+func addTestAddrs(app *app.EstakeApp, ctx sdk.Context, accNum int, accAmt math.Int, strategy GenerateAccountStrategy) []sdk.AccAddress {
 	testAddrs := strategy(accNum)
 
 	initCoins := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, accAmt))
@@ -333,7 +333,7 @@ func addTestAddrs(app *app.PstakeApp, ctx sdk.Context, accNum int, accAmt math.I
 	return testAddrs
 }
 
-func InitAccountWithCoins(app *app.PstakeApp, ctx sdk.Context, addr sdk.AccAddress, coins sdk.Coins) {
+func InitAccountWithCoins(app *app.EstakeApp, ctx sdk.Context, addr sdk.AccAddress, coins sdk.Coins) {
 	err := app.BankKeeper.MintCoins(ctx, minttypes.ModuleName, coins)
 	if err != nil {
 		panic(err)
@@ -378,7 +378,7 @@ func TestAddr(addr string, bech string) (sdk.AccAddress, error) {
 }
 
 // CheckBalance checks the balance of an account.
-func CheckBalance(t *testing.T, app *app.PstakeApp, addr sdk.AccAddress, balances sdk.Coins) {
+func CheckBalance(t *testing.T, app *app.EstakeApp, addr sdk.AccAddress, balances sdk.Coins) {
 	ctxCheck := app.BaseApp.NewContext(true, tmproto.Header{})
 	require.True(t, balances.IsEqual(app.BankKeeper.GetAllBalances(ctxCheck, addr)))
 }

@@ -13,8 +13,8 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"github.com/spf13/cobra"
 
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos/client/utils"
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/client/utils"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 // GetTxCmd returns the transaction commands for this module
@@ -73,7 +73,7 @@ func NewLiquidStakeCmd() *cobra.Command {
 
 func NewMinDepositAndFeeChangeCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "pstake-lscosmos-min-deposit-and-fee-change",
+		Use:   "estake-lscosmos-min-deposit-and-fee-change",
 		Args:  cobra.ExactArgs(1),
 		Short: "Submit a minimum deposit and fee change proposal",
 		Long: strings.TrimSpace(
@@ -89,15 +89,15 @@ Example Proposal :
 	"title": "min-deposit and fee change proposal",
 	"description": "this proposal changes min-deposit and protocol fee on chain",
 	"min_deposit": "5",
-	"pstake_deposit_fee": "0.1",
-	"pstake_restake_fee": "0.1",
-	"pstake_unstake_fee": "0.1",
-	"pstake_redemption_fee": "0.1",
+	"estake_deposit_fee": "0.1",
+	"estake_restake_fee": "0.1",
+	"estake_unstake_fee": "0.1",
+	"estake_redemption_fee": "0.1",
 	"deposit": "100stake"
 }
 
 Example:
-$ %s tx gov submit-proposal pstake-lscosmos-min-deposit-and-fee-change  <path/to/proposal.json> --from <key_or_address> --fees <1000stake> --gas <200000>
+$ %s tx gov submit-proposal estake-lscosmos-min-deposit-and-fee-change  <path/to/proposal.json> --from <key_or_address> --fees <1000stake> --gas <200000>
 `,
 				version.AppName,
 			),
@@ -117,20 +117,20 @@ $ %s tx gov submit-proposal pstake-lscosmos-min-deposit-and-fee-change  <path/to
 			if !ok {
 				return types.ErrInvalidIntParse
 			}
-			depositFee, err := sdk.NewDecFromStr(proposal.PstakeDepositFee)
+			depositFee, err := sdk.NewDecFromStr(proposal.EstakeDepositFee)
 			if err != nil {
 				return err
 			}
 
-			restakeFee, err := sdk.NewDecFromStr(proposal.PstakeRestakeFee)
+			restakeFee, err := sdk.NewDecFromStr(proposal.EstakeRestakeFee)
 			if err != nil {
 				return err
 			}
-			unstakeFee, err := sdk.NewDecFromStr(proposal.PstakeUnstakeFee)
+			unstakeFee, err := sdk.NewDecFromStr(proposal.EstakeUnstakeFee)
 			if err != nil {
 				return err
 			}
-			redemptionFee, err := sdk.NewDecFromStr(proposal.PstakeRedemptionFee)
+			redemptionFee, err := sdk.NewDecFromStr(proposal.EstakeRedemptionFee)
 			if err != nil {
 				return err
 			}
@@ -161,13 +161,13 @@ $ %s tx gov submit-proposal pstake-lscosmos-min-deposit-and-fee-change  <path/to
 	}
 }
 
-func NewPstakeFeeAddressChangeCmd() *cobra.Command {
+func NewEstakeFeeAddressChangeCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "pstake-lscosmos-change-pstake-fee-address [proposal-file]",
+		Use:   "estake-lscosmos-change-estake-fee-address [proposal-file]",
 		Args:  cobra.ExactArgs(1),
-		Short: "Submit a pstake fee address change proposal",
+		Short: "Submit a estake fee address change proposal",
 		Long: strings.TrimSpace(
-			fmt.Sprintf(`Submit a pstake fee address change proposal along with an initial deposit
+			fmt.Sprintf(`Submit a estake fee address change proposal along with an initial deposit
 The proposal details must be supplied via a JSON file. For values that contains objects,
 only non-empty fields will be updated.
 
@@ -176,14 +176,14 @@ important that any value change is valid.
 
 Example Proposal :
 {
-	"title": "change pstake fee address",
-	"description": "this proposal changes pstake fee address in the chain",
-	"pstake_fee_address" : "persistence1pss7nxeh3f9md2vuxku8q99femnwdjtcpe9ky9"
+	"title": "change estake fee address",
+	"description": "this proposal changes estake fee address in the chain",
+	"estake_fee_address" : "did:fury:e1pss7nxeh3f9md2vuxku8q99femnwdjtcpe9ky9"
 	"deposit": "100stake"
 }
 
 Example:
-$ %s tx gov submit-proposal pstake-lscosmos-change-pstake-fee-address <path/to/proposal.json> --from <key_or_address> --fees <1000stake> --gas <200000>
+$ %s tx gov submit-proposal estake-lscosmos-change-estake-fee-address <path/to/proposal.json> --from <key_or_address> --fees <1000stake> --gas <200000>
 `,
 				version.AppName,
 			),
@@ -193,22 +193,22 @@ $ %s tx gov submit-proposal pstake-lscosmos-change-pstake-fee-address <path/to/p
 			if err != nil {
 				return err
 			}
-			proposal, err := utils.ParsePstakeFeeAddressChangeProposalJSON(clientCtx.LegacyAmino, args[0])
+			proposal, err := utils.ParseEstakeFeeAddressChangeProposalJSON(clientCtx.LegacyAmino, args[0])
 			if err != nil {
 				return err
 			}
 
 			from := clientCtx.GetFromAddress()
 
-			pstakeFeeAddress, err := sdk.AccAddressFromBech32(proposal.PstakeFeeAddress)
+			estakeFeeAddress, err := sdk.AccAddressFromBech32(proposal.EstakeFeeAddress)
 			if err != nil {
 				return err
 			}
 
-			content := types.NewPstakeFeeAddressChangeProposal(
+			content := types.NewEstakeFeeAddressChangeProposal(
 				proposal.Title,
 				proposal.Description,
-				pstakeFeeAddress.String(),
+				estakeFeeAddress.String(),
 			)
 
 			deposit, err := sdk.ParseCoinsNormalized(proposal.Deposit)
@@ -228,7 +228,7 @@ $ %s tx gov submit-proposal pstake-lscosmos-change-pstake-fee-address <path/to/p
 
 func NewAllowListedValidatorSetChangeProposalCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "pstake-lscosmos-change-allow-listed-validator-set [proposal-file]",
+		Use:   "estake-lscosmos-change-allow-listed-validator-set [proposal-file]",
 		Args:  cobra.ExactArgs(1),
 		Short: "Submit a AllowListed Validator set change proposal",
 		Long: strings.TrimSpace(
@@ -241,8 +241,8 @@ important that any value change is valid.
 
 Example Proposal :
 {
-	"title": "change pstake fee address",
-	"description": "this proposal changes pstake fee address in the chain",
+	"title": "change estake fee address",
+	"description": "this proposal changes estake fee address in the chain",
 	"allow_listed_validators": {
    		 "allow_listed_validators": [
       {
@@ -255,7 +255,7 @@ Example Proposal :
 }
 
 Example:
-$ %s tx gov submit-proposal pstake-lscosmos-change-allow-listed-validator-set <path/to/proposal.json> --from <key_or_address> --fees <1000stake> --gas <200000>
+$ %s tx gov submit-proposal estake-lscosmos-change-allow-listed-validator-set <path/to/proposal.json> --from <key_or_address> --fees <1000stake> --gas <200000>
 `,
 				version.AppName,
 			),
@@ -411,7 +411,7 @@ func NewJumpStartCmd() *cobra.Command {
 				return err
 			}
 
-			pstakeAddress := clientctx.GetFromAddress()
+			estakeAddress := clientctx.GetFromAddress()
 
 			msgDetails, err := utils.ParseJumpstartTxnJSON(clientctx.LegacyAmino, args[0])
 			if err != nil {
@@ -422,37 +422,37 @@ func NewJumpStartCmd() *cobra.Command {
 			if !ok {
 				return types.ErrInvalidIntParse
 			}
-			depositFee, err := sdk.NewDecFromStr(msgDetails.PstakeParams.PstakeDepositFee)
+			depositFee, err := sdk.NewDecFromStr(msgDetails.EstakeParams.EstakeDepositFee)
 			if err != nil {
 				return err
 			}
-			restakeFee, err := sdk.NewDecFromStr(msgDetails.PstakeParams.PstakeRestakeFee)
+			restakeFee, err := sdk.NewDecFromStr(msgDetails.EstakeParams.EstakeRestakeFee)
 			if err != nil {
 				return err
 			}
-			unstakeFee, err := sdk.NewDecFromStr(msgDetails.PstakeParams.PstakeUnstakeFee)
+			unstakeFee, err := sdk.NewDecFromStr(msgDetails.EstakeParams.EstakeUnstakeFee)
 			if err != nil {
 				return err
 			}
-			redemptionFee, err := sdk.NewDecFromStr(msgDetails.PstakeParams.PstakeRedemptionFee)
+			redemptionFee, err := sdk.NewDecFromStr(msgDetails.EstakeParams.EstakeRedemptionFee)
 			if err != nil {
 				return err
 			}
-			pstakeParams := types.PstakeParams{
-				PstakeDepositFee:    depositFee,
-				PstakeRestakeFee:    restakeFee,
-				PstakeUnstakeFee:    unstakeFee,
-				PstakeRedemptionFee: redemptionFee,
-				PstakeFeeAddress:    pstakeAddress.String(),
+			estakeParams := types.EstakeParams{
+				EstakeDepositFee:    depositFee,
+				EstakeRestakeFee:    restakeFee,
+				EstakeUnstakeFee:    unstakeFee,
+				EstakeRedemptionFee: redemptionFee,
+				EstakeFeeAddress:    estakeAddress.String(),
 			}
 
 			if types.ConvertBaseDenomToMintDenom(msgDetails.BaseDenom) != msgDetails.MintDenom {
 				return types.ErrInvalidMintDenom
 			}
 
-			msg := types.NewMsgJumpStart(pstakeAddress, msgDetails.ChainID, msgDetails.ConnectionID, msgDetails.TransferChannel,
+			msg := types.NewMsgJumpStart(estakeAddress, msgDetails.ChainID, msgDetails.ConnectionID, msgDetails.TransferChannel,
 				msgDetails.TransferPort, msgDetails.BaseDenom, msgDetails.MintDenom, minDeposit, msgDetails.AllowListedValidators,
-				pstakeParams, msgDetails.HostAccounts)
+				estakeParams, msgDetails.HostAccounts)
 
 			return tx.GenerateOrBroadcastTxCLI(clientctx, cmd.Flags(), msg)
 		},

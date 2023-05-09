@@ -15,7 +15,7 @@ import (
 	epochstypes "github.com/persistenceOne/persistence-sdk/v2/x/epochs/types"
 	ibchookertypes "github.com/persistenceOne/persistence-sdk/v2/x/ibchooker/types"
 
-	lscosmostypes "github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
+	lscosmostypes "github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 // BeforeEpochStart - call hook if registered
@@ -149,13 +149,13 @@ func (k Keeper) DelegationEpochWorkFlow(ctx sdk.Context, hostChainParams lscosmo
 
 		k.AddIBCTransferToTransientStore(ctx, depositBalance)
 	}
-	// move extra tokens to pstake address - anyone can send tokens to delegation address.
+	// move extra tokens to estake address - anyone can send tokens to delegation address.
 	// deposit address is deny-listed address - can only accept tokens via transactions, so should not have any extra tokens
-	// should be transferred to pstake address.
+	// should be transferred to estake address.
 	remainingDelegationBalance := k.bankKeeper.GetAllBalances(ctx, authtypes.NewModuleAddress(lscosmostypes.DelegationModuleAccount))
 
 	if remainingDelegationBalance.IsAllPositive() {
-		feeAddr, err := sdk.AccAddressFromBech32(hostChainParams.PstakeParams.PstakeFeeAddress)
+		feeAddr, err := sdk.AccAddressFromBech32(hostChainParams.EstakeParams.EstakeFeeAddress)
 		if err != nil {
 			return err
 		}

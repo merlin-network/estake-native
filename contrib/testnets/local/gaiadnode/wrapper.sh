@@ -3,9 +3,9 @@
 ##
 ## Input parameters
 ##
-BINARY=/pstaked/${BINARY:-pstaked}
+BINARY=/estaked/${BINARY:-estaked}
 ID=${ID:-0}
-LOG=${LOG:-pstaked.log}
+LOG=${LOG:-estaked.log}
 
 ##
 ## Assert linux binary

@@ -1,5 +1,5 @@
 ---
 
-- name: restart pstaked
-  service: name=pstaked state=restarted
+- name: restart estaked
+  service: name=estaked state=restarted
 

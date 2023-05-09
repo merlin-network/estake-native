@@ -10,9 +10,9 @@ import (
 	ibctesting "github.com/cosmos/ibc-go/v6/testing"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/persistenceOne/pstake-native/v2/app"
-	"github.com/persistenceOne/pstake-native/v2/app/helpers"
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/app"
+	"github.com/merlin-network/estake-native/v2/app/helpers"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 var (
@@ -39,7 +39,7 @@ var (
 	BaseDenom        = "uatom"
 	MintDenom        = "stk/uatom"
 	MinDeposit       = sdk.NewInt(5)
-	PstakeFeeAddress = "persistence1pss7nxeh3f9md2vuxku8q99femnwdjtcpe9ky9"
+	EstakeFeeAddress = "did:fury:e1pss7nxeh3f9md2vuxku8q99femnwdjtcpe9ky9"
 )
 
 func init() {
@@ -49,7 +49,7 @@ func init() {
 type IntegrationTestSuite struct {
 	suite.Suite
 
-	app        *app.PstakeApp
+	app        *app.EstakeApp
 	ctx        sdk.Context
 	govHandler govtypes.Handler
 
@@ -59,7 +59,7 @@ type IntegrationTestSuite struct {
 	path        *ibctesting.Path
 }
 
-func newPstakeAppPath(chainA, chainB *ibctesting.TestChain) *ibctesting.Path {
+func newEstakeAppPath(chainA, chainB *ibctesting.TestChain) *ibctesting.Path {
 	path := ibctesting.NewPath(chainA, chainB)
 	path.EndpointA.ChannelConfig.PortID = ibctesting.TransferPort
 	path.EndpointB.ChannelConfig.PortID = ibctesting.TransferPort
@@ -67,10 +67,10 @@ func newPstakeAppPath(chainA, chainB *ibctesting.TestChain) *ibctesting.Path {
 	return path
 }
 
-func GetPstakeApp(chain *ibctesting.TestChain) *app.PstakeApp {
-	app1, ok := chain.App.(*app.PstakeApp)
+func GetEstakeApp(chain *ibctesting.TestChain) *app.EstakeApp {
+	app1, ok := chain.App.(*app.EstakeApp)
 	if !ok {
-		panic("not pstake app")
+		panic("not estake app")
 	}
 
 	return app1
@@ -81,21 +81,21 @@ func TestKeeperTestSuite(t *testing.T) {
 }
 
 func (suite *IntegrationTestSuite) SetupTest() {
-	_, pstakeApp, ctx := helpers.CreateTestApp(suite.T())
+	_, estakeApp, ctx := helpers.CreateTestApp(suite.T())
 
-	keeper := pstakeApp.LSCosmosKeeper
+	keeper := estakeApp.LSCosmosKeeper
 
 	params := types.DefaultParams()
 	keeper.SetParams(ctx, params)
 
-	suite.app = &pstakeApp
+	suite.app = &estakeApp
 	suite.ctx = ctx
 
 	suite.coordinator = ibctesting.NewCoordinator(suite.T(), 2)
 	suite.chainA = suite.coordinator.GetChain(ibctesting.GetChainID(1))
 	suite.chainB = suite.coordinator.GetChain(ibctesting.GetChainID(2))
 
-	suite.path = newPstakeAppPath(suite.chainA, suite.chainB)
+	suite.path = newEstakeAppPath(suite.chainA, suite.chainB)
 	suite.coordinator.SetupConnections(suite.path)
 
 	// set host chain params
@@ -118,7 +118,7 @@ func (suite *IntegrationTestSuite) SetupTest() {
 		TransferPort,
 		BaseDenom,
 		MintDenom,
-		PstakeFeeAddress,
+		EstakeFeeAddress,
 		MinDeposit,
 		depositFee,
 		restakeFee,
@@ -134,22 +134,22 @@ func (suite *IntegrationTestSuite) SetupTest() {
 }
 
 func (suite *IntegrationTestSuite) TestMintToken() {
-	pstakeApp, ctx := suite.app, suite.ctx
-	testParams := pstakeApp.LSCosmosKeeper.GetHostChainParams(ctx)
+	estakeApp, ctx := suite.app, suite.ctx
+	testParams := estakeApp.LSCosmosKeeper.GetHostChainParams(ctx)
 
 	ibcDenom := ibctransfertypes.GetPrefixedDenom(testParams.TransferPort, testParams.TransferChannel, testParams.BaseDenom)
 	balanceOfIbcToken := sdk.NewInt64Coin(ibcDenom, 100)
-	mintAmountDec := sdk.NewDecFromInt(balanceOfIbcToken.Amount).Mul(pstakeApp.LSCosmosKeeper.GetCValue(ctx))
+	mintAmountDec := sdk.NewDecFromInt(balanceOfIbcToken.Amount).Mul(estakeApp.LSCosmosKeeper.GetCValue(ctx))
 	toBeMintedTokens, _ := sdk.NewDecCoinFromDec(testParams.MintDenom, mintAmountDec).TruncateDecimal()
 
 	addr := sdk.AccAddress("addr________________")
-	acc := pstakeApp.AccountKeeper.NewAccountWithAddress(ctx, addr)
-	pstakeApp.AccountKeeper.SetAccount(ctx, acc)
-	suite.Require().NoError(testutil.FundAccount(pstakeApp.BankKeeper, ctx, addr, sdk.NewCoins(balanceOfIbcToken)))
+	acc := estakeApp.AccountKeeper.NewAccountWithAddress(ctx, addr)
+	estakeApp.AccountKeeper.SetAccount(ctx, acc)
+	suite.Require().NoError(testutil.FundAccount(estakeApp.BankKeeper, ctx, addr, sdk.NewCoins(balanceOfIbcToken)))
 
-	suite.Require().NoError(pstakeApp.LSCosmosKeeper.MintTokens(ctx, toBeMintedTokens, addr))
+	suite.Require().NoError(estakeApp.LSCosmosKeeper.MintTokens(ctx, toBeMintedTokens, addr))
 
-	currBalance := pstakeApp.BankKeeper.GetBalance(ctx, addr, testParams.MintDenom)
+	currBalance := estakeApp.BankKeeper.GetBalance(ctx, addr, testParams.MintDenom)
 
 	suite.Require().Equal(toBeMintedTokens, currBalance)
 }

@@ -21,7 +21,7 @@ It does the following operations :
 - Current C value is fetched and used to calculate amount of stk tokens to be minted corresponding to it.
 - IBC token deposit is sent to deposit module account from the delegation account. If there is an error, tokens are sent back to user.
 - Once the tokens are transferred to deposit module account, the above calculated stk tokens are minted and sent from module account to user account
-- Protocol fees is calculated using already set parameters through governance proposal and sent to the pStake fee address.
+- Protocol fees is calculated using already set parameters through governance proposal and sent to the eStake fee address.
 
 Inputs for this message : 
 
@@ -31,7 +31,7 @@ Inputs for this message :
 Example of a liquid staking transaction :
 
 ```
-$ pstaked tx lscosmos liquid-stake 2000000ibc/DENOM_HASH  --from <delegator_key_name> --chain-id <chain_id> --keyring-backend <keyring_backend>
+$ estaked tx lscosmos liquid-stake 2000000ibc/DENOM_HASH  --from <delegator_key_name> --chain-id <chain_id> --keyring-backend <keyring_backend>
 ```
 
 ### MsgLiquidUnstake
@@ -44,7 +44,7 @@ It performs the following operations :
 - Validates if the mint denom stored matches the denom submitted by the user. If not, returns and error of invalid denom.
 - Delegator address is checked and returns if address is invalid.
 - Transfer tokens user wants to liquid unstake into undelegation module account.
-- Protocol fees is calculated using already set parameters through governance proposal and sent to the pStake fee address.
+- Protocol fees is calculated using already set parameters through governance proposal and sent to the eStake fee address.
 - Entry is written in the KV store for the current unbonding epoch. 
 - Another check is made to make sure that amount to be unbonded in the current unboding epoch does not overtake the amount currently staked. If that is the case then an error is returned.
 
@@ -54,7 +54,7 @@ Inputs for this message :
 - `Amount` : It is the amount of stk tokens submitted by the delegator.
 
 ```
-$ pstaked tx lscosmos liquid-unstake 50000000stk/uatom --from <delegator_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
+$ estaked tx lscosmos liquid-unstake 50000000stk/uatom --from <delegator_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
 ```
 
 ### MsgRedeem
@@ -68,7 +68,7 @@ It performs the following operations :
 - Delegator address is checked and returns if address is invalid.
 - Validates if the mint denom stored matches the denom submitted by the user. If not, returns and error of invalid denom.
 - Transfer tokens user wants to liquid unstake into lscosmos module account.
-- Protocol fees is calculated using already set parameters through governance proposal and sent to the pStake fee address.
+- Protocol fees is calculated using already set parameters through governance proposal and sent to the eStake fee address.
 - Redeemable IBC tokens after deducting fees are transferred to user account.
 - stk tokens after deduction of fees are burnt. If not burnt, an error is returned.
 
@@ -78,7 +78,7 @@ Inputs for this message :
 - `Amount` : It is the amount of stk tokens submitted by the delegator.
 
 ```
-$ pstaked tx lscosmos redeem 10000000stk/uatom --from <delegator_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
+$ estaked tx lscosmos redeem 10000000stk/uatom --from <delegator_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
 ```
 
 ### MsgClaim
@@ -99,20 +99,20 @@ Inputs for this message :
 - `DelegatorAddress` : Address of the delegator wanting to claim matured undelegations or failed undelegations.
 
 ```
-$ pstaked tx lscosmos claim --from <delegator_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
+$ estaked tx lscosmos claim --from <delegator_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
 ```
 
 ### MsgJumpStart
 
-JumpStart is a transactions reserved for the pstake fee address to restart the module in case of an emergency.
+JumpStart is a transactions reserved for the estake fee address to restart the module in case of an emergency.
 
 It performs the following operations : 
 
-- Checks if the address in the transaction matches the pstake fee address. If not, an error is returned.
+- Checks if the address in the transaction matches the estake fee address. If not, an error is returned.
 - Checks if the module is active and returns an error that the module is disabled if condition is not matched.
 - Empty delegation state and host chain rewards address are set.
 - Host accounts present in the message are validated and set if no error is present.
-- All the pstake params are validated. If not correct then an invalid params error is returned.
+- All the estake params are validated. If not correct then an invalid params error is returned.
 - Some check pertaining to channels and ports are made to ensure correct module state.
 - New capabilities are claimed for the provided channel and port.
 - Delegations InterChainAccount is registered. If not then an error is returned.
@@ -120,7 +120,7 @@ It performs the following operations :
 
 Inputs for this message :
 
-- `PstakeAddress` : Address set as pstake fee address
+- `EstakeAddress` : Address set as estake fee address
 - `ChainID` : ChainID of blockchain on which liquid staking is aimed.
 - `ConnectionID` : Connection ID for the IBC channel made for liquid staking module.
 - `TransferChannel` : Transfer Channel specific to the module.
@@ -129,7 +129,7 @@ Inputs for this message :
 - `MintDenom` : Mint denom is denom to be minted.
 - `MinDeposit` : Min deposit is the lower cap of the deposit that can be made while liquid staking.
 - `AllowListedValidators` : Set of validators allowlisted for delegation on host chain. It also consists of weights given to each validator. 
-- `PstakeParams` : Pstake params consists of different types of fees and pstake fee address
+- `EstakeParams` : Estake params consists of different types of fees and estake fee address
 - `HostAccounts` : It is made of names for the ICA accounts to be created on host chain.
 
 ### MsgRecreateICA
@@ -146,7 +146,7 @@ Inputs for this message :
 - `FromAddress` : Address from which this transaction is being sent.
 
 ```
-$ pstaked tx lscosmos recreate-ica --from <from_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
+$ estaked tx lscosmos recreate-ica --from <from_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
 ```
 
 ### MsgChangeModuleState
@@ -161,11 +161,11 @@ It performs  the following operations :
 
 Inputs for this message :
 
-- `PstakeAddress` : Address from which this transaction is being sent (should be pstakeAddress).
+- `EstakeAddress` : Address from which this transaction is being sent (should be estakeAddress).
 - `ModuleState` : The boolean value true/false to which the module state is to be set.
 
 ```
-$ pstaked tx lscosmos change-module-state false --from <from_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
+$ estaked tx lscosmos change-module-state false --from <from_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
 ```
 
 ### MsgReportSlashing
@@ -181,9 +181,9 @@ It performs  the following operations :
 
 Inputs for this message :
 
-- `PstakeAddress` : Address from which this transaction is being sent (should be pstakeAddress).
+- `EstakeAddress` : Address from which this transaction is being sent (should be estakeAddress).
 - `ValidatorAddress` : Validator address of the slashed validator.
 
 ```
-$ pstaked tx lscosmos report slashing cosmosvaloperaddress --from <from_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
+$ estaked tx lscosmos report slashing cosmosvaloperaddress --from <from_address> --chain-id <chain-id> --keyring-backend <keyring_backend>
 ```

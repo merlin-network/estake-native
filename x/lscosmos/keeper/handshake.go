@@ -17,7 +17,7 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v6/modules/core/exported"
 	"github.com/gogo/protobuf/proto"
 
-	"github.com/persistenceOne/pstake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
 )
 
 // OnChanOpenInit implements the IBCModule interface
@@ -400,8 +400,8 @@ func (k Keeper) handleAckMsgData(ctx sdk.Context, data []byte, msg sdk.Msg, host
 				k.AddBalanceToDelegationState(ctx, sdk.NewCoin(hostChainParams.BaseDenom, amountOfBaseDenom))
 
 				//Mint autocompounding fee, use old cValue as we mint tokens at previous cValue.
-				pstakeFeeAmount := hostChainParams.PstakeParams.PstakeRestakeFee.MulInt(amountOfBaseDenom)
-				protocolFee, _ := k.ConvertTokenToStk(ctx, sdk.NewDecCoinFromDec(hostChainParams.BaseDenom, pstakeFeeAmount), cValue)
+				estakeFeeAmount := hostChainParams.EstakeParams.EstakeRestakeFee.MulInt(amountOfBaseDenom)
+				protocolFee, _ := k.ConvertTokenToStk(ctx, sdk.NewDecCoinFromDec(hostChainParams.BaseDenom, estakeFeeAmount), cValue)
 
 				err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(protocolFee))
 				if err != nil {
@@ -409,7 +409,7 @@ func (k Keeper) handleAckMsgData(ctx sdk.Context, data []byte, msg sdk.Msg, host
 				}
 
 				//Send protocol fee to protocol pool
-				err = k.SendProtocolFee(ctx, sdk.NewCoins(protocolFee), types.ModuleName, hostChainParams.PstakeParams.PstakeFeeAddress)
+				err = k.SendProtocolFee(ctx, sdk.NewCoins(protocolFee), types.ModuleName, hostChainParams.EstakeParams.EstakeFeeAddress)
 				if err != nil {
 					return "", types.ErrFailedDeposit
 				}
