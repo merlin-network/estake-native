@@ -1,0 +1,19 @@
+{
+  "chain_name": "estake",
+  "coingecko": "elysium",
+  "api": "https://rest.devnet.elysium.estake.finance:443",
+  "rpc": ["https://rpc.devnet.elysium.estake.finance:443", "https://rpc.devnet.elysium.estake.finance:443"],
+  "snapshot_provider": "",
+  "sdk_version": "0.45.6",
+  "coin_type": "118",
+  "min_tx_fee": "3000",
+  "addr_prefix": "did:fury:e",
+  "logo": "",
+  "assets": [{
+    "base": "ufury",
+    "symbol": "FURY",
+    "exponent": "6",
+    "coingecko_id": "elysium",
+    "logo": ""
+  }]
+}

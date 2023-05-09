@@ -1,0 +1,5 @@
+---
+
+- name: restart estaked
+  service: name=estaked state=restarted
+
