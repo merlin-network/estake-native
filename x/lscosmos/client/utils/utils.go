@@ -5,7 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 
-	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/x/lscosmos/types"
 )
 
 // EstakeParams defines the fees and address for register host chain proposal's EstakeParams

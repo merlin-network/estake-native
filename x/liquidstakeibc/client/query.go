@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 
-	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/x/liquidstakeibc/types"
 )
 
 // NewQueryCmd returns the parent command for all x/liquidstakeibc CLi query commands.

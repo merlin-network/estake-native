@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/merlin-network/estake-native/v2/x/lselysium/simulation"
+	"github.com/merlin-network/estake-native/x/lselysium/simulation"
 )
 
 func TestParamChanges(t *testing.T) {

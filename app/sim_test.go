@@ -6,9 +6,9 @@ import (
 	"os"
 	"testing"
 
-	estake "github.com/merlin-network/estake-native/v2/app"
+	estake "github.com/merlin-network/estake-native/app"
 
-	"github.com/merlin-network/estake-native/v2/app/helpers"
+	"github.com/merlin-network/estake-native/app/helpers"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/libs/rand"

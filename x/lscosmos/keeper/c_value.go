@@ -5,7 +5,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/x/lscosmos/types"
 )
 
 // GetMintedAmount gets minted amount

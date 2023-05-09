@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	sdkTypes "github.com/cosmos/cosmos-sdk/types"
-	"github.com/merlin-network/estake-native/v2/app"
-	"github.com/merlin-network/estake-native/v2/cmd/estaked/cmd"
+	"github.com/merlin-network/estake-native/app"
+	"github.com/merlin-network/estake-native/cmd/estaked/cmd"
 )
 
 func main() {

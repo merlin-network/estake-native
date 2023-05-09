@@ -8,7 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/spf13/cobra"
 
-	"github.com/merlin-network/estake-native/v2/x/liquidstakeibc/types"
+	"github.com/merlin-network/estake-native/x/liquidstakeibc/types"
 )
 
 // NewTxCmd returns a root CLI command handler for all liquid staking transaction commands.

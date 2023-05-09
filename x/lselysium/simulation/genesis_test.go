@@ -13,8 +13,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"github.com/merlin-network/estake-native/v2/x/lselysium/simulation"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
+	"github.com/merlin-network/estake-native/x/lselysium/simulation"
+	"github.com/merlin-network/estake-native/x/lselysium/types"
 )
 
 // TestRandomizedGenState tests the normal scenario of applying RandomizedGenState.

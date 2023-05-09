@@ -22,11 +22,11 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	chain "github.com/merlin-network/estake-native/v2/app"
-	testhelpers "github.com/merlin-network/estake-native/v2/app/helpers"
-	"github.com/merlin-network/estake-native/v2/x/lselysium"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/keeper"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
+	chain "github.com/merlin-network/estake-native/app"
+	testhelpers "github.com/merlin-network/estake-native/app/helpers"
+	"github.com/merlin-network/estake-native/x/lselysium"
+	"github.com/merlin-network/estake-native/x/lselysium/keeper"
+	"github.com/merlin-network/estake-native/x/lselysium/types"
 )
 
 var (

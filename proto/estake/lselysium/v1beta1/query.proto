@@ -5,7 +5,7 @@ import "google/api/annotations.proto";
 import "estake/lselysium/v1beta1/liquidstaking.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/merlin-network/estake-native/v2/x/lselysium/types";
+option go_package = "github.com/merlin-network/estake-native/x/lselysium/types";
 
 // Query defines the gRPC query service for the liquidstaking module.
 service Query {

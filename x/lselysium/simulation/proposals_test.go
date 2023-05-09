@@ -10,9 +10,9 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	"github.com/merlin-network/estake-native/v2/app/params"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/simulation"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
+	"github.com/merlin-network/estake-native/app/params"
+	"github.com/merlin-network/estake-native/x/lselysium/simulation"
+	"github.com/merlin-network/estake-native/x/lselysium/types"
 )
 
 func TestProposalContents(t *testing.T) {

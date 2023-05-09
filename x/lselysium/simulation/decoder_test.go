@@ -9,8 +9,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/cosmos/cosmos-sdk/types/kv"
 
-	"github.com/merlin-network/estake-native/v2/x/lselysium/simulation"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
+	"github.com/merlin-network/estake-native/x/lselysium/simulation"
+	"github.com/merlin-network/estake-native/x/lselysium/types"
 )
 
 func TestDecodeLiquidStakingStore(t *testing.T) {

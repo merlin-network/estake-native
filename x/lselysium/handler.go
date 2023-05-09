@@ -5,8 +5,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/merlin-network/estake-native/v2/x/lselysium/keeper"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
+	"github.com/merlin-network/estake-native/x/lselysium/keeper"
+	"github.com/merlin-network/estake-native/x/lselysium/types"
 )
 
 // NewHandler returns a new msg handler.

@@ -15,7 +15,7 @@ import (
 	host "github.com/cosmos/ibc-go/v6/modules/core/24-host"
 	"github.com/tendermint/tendermint/libs/log"
 
-	"github.com/merlin-network/estake-native/v2/x/lscosmos/types"
+	"github.com/merlin-network/estake-native/x/lscosmos/types"
 )
 
 // Keeper of this module maintains the state of whole module

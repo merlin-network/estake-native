@@ -8,8 +8,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"github.com/merlin-network/estake-native/v2/app/helpers"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
+	"github.com/merlin-network/estake-native/app/helpers"
+	"github.com/merlin-network/estake-native/x/lselysium/types"
 )
 
 func (s *KeeperTestSuite) TestRebalancingCase1() {

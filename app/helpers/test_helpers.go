@@ -36,8 +36,8 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/merlin-network/estake-native/v2/app"
-	appparams "github.com/merlin-network/estake-native/v2/app/params"
+	"github.com/merlin-network/estake-native/app"
+	appparams "github.com/merlin-network/estake-native/app/params"
 )
 
 // SimAppChainID hardcoded chainID for simulation

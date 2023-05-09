@@ -7,9 +7,9 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/merlin-network/estake-native/v2/app"
-	"github.com/merlin-network/estake-native/v2/app/helpers"
-	"github.com/merlin-network/estake-native/v2/x/lscosmos"
+	"github.com/merlin-network/estake-native/app"
+	"github.com/merlin-network/estake-native/app/helpers"
+	"github.com/merlin-network/estake-native/x/lscosmos"
 )
 
 type HandlerTestSuite struct {

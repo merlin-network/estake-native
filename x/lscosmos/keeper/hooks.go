@@ -15,7 +15,7 @@ import (
 	epochstypes "github.com/persistenceOne/persistence-sdk/v2/x/epochs/types"
 	ibchookertypes "github.com/persistenceOne/persistence-sdk/v2/x/ibchooker/types"
 
-	lscosmostypes "github.com/merlin-network/estake-native/v2/x/lscosmos/types"
+	lscosmostypes "github.com/merlin-network/estake-native/x/lscosmos/types"
 )
 
 // BeforeEpochStart - call hook if registered

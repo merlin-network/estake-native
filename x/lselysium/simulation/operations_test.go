@@ -3,7 +3,7 @@ package simulation_test
 import (
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	testhelpers "github.com/merlin-network/estake-native/v2/app/helpers"
+	testhelpers "github.com/merlin-network/estake-native/app/helpers"
 	"math/rand"
 	"testing"
 	"time"
@@ -16,10 +16,10 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	chain "github.com/merlin-network/estake-native/v2/app"
-	"github.com/merlin-network/estake-native/v2/app/params"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/simulation"
-	"github.com/merlin-network/estake-native/v2/x/lselysium/types"
+	chain "github.com/merlin-network/estake-native/app"
+	"github.com/merlin-network/estake-native/app/params"
+	"github.com/merlin-network/estake-native/x/lselysium/simulation"
+	"github.com/merlin-network/estake-native/x/lselysium/types"
 )
 
 // TestWeightedOperations tests the weights of the operations.

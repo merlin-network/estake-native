@@ -3,7 +3,7 @@ package estake.lscosmos.v1beta1;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/merlin-network/estake-native/v2/x/lscosmos/types";
+option go_package = "github.com/merlin-network/estake-native/x/lscosmos/types";
 
 // Params defines the parameters for the module.
 message Params { option (gogoproto.goproto_stringer) = false; }
